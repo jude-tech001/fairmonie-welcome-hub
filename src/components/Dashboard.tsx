@@ -17,15 +17,18 @@ import {
   Wifi, 
   Target, 
   Tv, 
-  ShieldCheck, 
+  LogOut, 
   DollarSign, 
   UserPlus, 
   MoreHorizontal,
   Headphones,
   Maximize,
   Bell,
-  Gift
+  Gift,
+  Loader2
 } from 'lucide-react';
+import AddMoneyModal from '@/components/AddMoneyModal';
+import JoinGroup from '@/components/JoinGroup';
 
 interface User {
   name: string;
@@ -35,16 +38,19 @@ interface User {
 interface DashboardProps {
   user: User;
   onAddMoney: () => void;
+  onLogout?: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
-  const [balance] = useState(0.00);
+const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => {
+  const [balance, setBalance] = useState(0.00);
   const [showBalance, setShowBalance] = useState(true);
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
+  const [showAddMoneyModal, setShowAddMoneyModal] = useState(false);
+  const [showJoinGroup, setShowJoinGroup] = useState(false);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600' },
-    { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600' },
+    { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600', onClick: () => setShowJoinGroup(true) },
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
   ];
 
@@ -53,7 +59,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
     { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600' },
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600' },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600' },
-    { title: 'Safebox', icon: ShieldCheck, color: 'bg-green-100 text-green-600' },
+    { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
     { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600' },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600' },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600' }
@@ -77,6 +83,26 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
       status: 'Successful'
     }
   ];
+
+  const handleAddMoneyClick = () => {
+    setShowAddMoneyModal(true);
+  };
+
+  const handleBonusClaimed = (amount: number) => {
+    setBalance(prevBalance => prevBalance + amount);
+  };
+
+  const handleServiceClick = (service: any) => {
+    if (service.onClick) {
+      service.onClick();
+    }
+  };
+
+  const handleQuickActionClick = (action: any) => {
+    if (action.onClick) {
+      action.onClick();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -130,7 +156,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
                 {showBalance ? `₦${balance.toLocaleString()}.00` : '****'}
               </div>
               <Button
-                onClick={onAddMoney}
+                onClick={handleAddMoneyClick}
                 className="bg-white text-green-600 hover:bg-gray-50 rounded-full px-6 py-2 font-medium transition-all duration-200 transform hover:scale-105"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -143,46 +169,41 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
-            <Card key={index} className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer">
-              <CardContent className="p-4 text-center">
-                <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center mx-auto mb-3`}>
-                  <action.icon className="w-6 h-6" />
-                </div>
-                <p className="text-sm font-medium text-gray-700">{action.title}</p>
-              </CardContent>
-            </Card>
+            <div key={index} className="text-center cursor-pointer" onClick={() => handleQuickActionClick(action)}>
+              <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center mx-auto mb-3`}>
+                <action.icon className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-medium text-gray-700">{action.title}</p>
+            </div>
           ))}
         </div>
 
         {/* Services Grid */}
         <div className="grid grid-cols-4 gap-4">
           {services.map((service, index) => (
-            <Card key={index} className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer">
-              <CardContent className="p-3 text-center">
-                <div className={`w-10 h-10 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2`}>
-                  <service.icon className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-medium text-gray-700">{service.title}</p>
-              </CardContent>
-            </Card>
+            <div key={index} className="text-center cursor-pointer" onClick={() => handleServiceClick(service)}>
+              <div className={`w-10 h-10 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2`}>
+                <service.icon className="w-5 h-5" />
+              </div>
+              <p className="text-xs font-medium text-gray-700">{service.title}</p>
+            </div>
           ))}
         </div>
-
-        {/* Promotional Banner */}
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0 shadow-lg">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <Gift className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="font-semibold">Cash up for grabs!</p>
-                <p className="text-sm opacity-90">Invite friends to earn up to ₦5,600 Bonus</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
+
+      {/* Add Money Modal */}
+      <AddMoneyModal 
+        isOpen={showAddMoneyModal}
+        onClose={() => setShowAddMoneyModal(false)}
+        onBonusClaimed={handleBonusClaimed}
+      />
+
+      {/* Join Group Modal */}
+      <JoinGroup 
+        isOpen={showJoinGroup}
+        onClose={() => setShowJoinGroup(false)}
+        onBack={() => setShowJoinGroup(false)}
+      />
 
       {/* Transaction History Modal */}
       <Dialog open={showTransactionHistory} onOpenChange={setShowTransactionHistory}>

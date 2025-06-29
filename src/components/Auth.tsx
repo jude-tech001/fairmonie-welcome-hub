@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [current, setCurrent] = useState(0);
 
   const bannerImages = [
+    '/lovable-uploads/dbb2402c-cf5a-4978-a0b6-f2ea9a4c3a76.png',
     '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
     '/lovable-uploads/40215c09-c6f9-4d2c-af14-e141b137c0b2.png',
     '/lovable-uploads/f1edd580-b9dd-4b28-b2d8-01c503af340c.png',
@@ -40,13 +42,13 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     // Auto-scroll functionality
     const interval = setInterval(() => {
       if (api) {
-        const nextIndex = (current + 1) % bannerImages.length;
+        const nextIndex = (api.selectedScrollSnap() + 1) % bannerImages.length;
         api.scrollTo(nextIndex);
       }
     }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
-  }, [api, current, bannerImages.length]);
+  }, [api, bannerImages.length]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +98,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-32 object-cover"
+                        className="w-full h-24 object-cover"
                       />
                     </CardContent>
                   </Card>

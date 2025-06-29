@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Auth from '@/components/Auth';
 import Dashboard from '@/components/Dashboard';
 import WelcomeModal from '@/components/WelcomeModal';
-import JoinGroup from '@/components/JoinGroup';
 import { toast } from '@/hooks/use-toast';
 
 interface User {
@@ -14,17 +13,18 @@ interface User {
 const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  const [showJoinGroup, setShowJoinGroup] = useState(false);
 
   const handleAuthSuccess = (userData: User) => {
     setUser(userData);
     setShowWelcomeModal(true);
   };
 
-  const handleAddMoney = () => {
+  const handleLogout = () => {
+    setUser(null);
+    setShowWelcomeModal(false);
     toast({
-      title: "Add Money",
-      description: "This feature will be available soon. Join our group to get started!",
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
       duration: 3000,
     });
   };
@@ -33,37 +33,21 @@ const Index = () => {
     setShowWelcomeModal(false);
   };
 
-  const handleJoinGroup = () => {
-    setShowWelcomeModal(false);
-    setShowJoinGroup(true);
-  };
-
-  const handleBackToWelcome = () => {
-    setShowJoinGroup(false);
-    setShowWelcomeModal(true);
-  };
-
-  const handleCloseJoinGroup = () => {
-    setShowJoinGroup(false);
-  };
-
   if (!user) {
     return <Auth onAuthSuccess={handleAuthSuccess} />;
   }
 
   return (
     <>
-      <Dashboard user={user} onAddMoney={handleAddMoney} />
+      <Dashboard 
+        user={user} 
+        onAddMoney={() => {}} 
+        onLogout={handleLogout}
+      />
       <WelcomeModal 
         isOpen={showWelcomeModal}
         onClose={handleCloseWelcomeModal}
         userName={user.name}
-        onJoinGroup={handleJoinGroup}
-      />
-      <JoinGroup
-        isOpen={showJoinGroup}
-        onClose={handleCloseJoinGroup}
-        onBack={handleBackToWelcome}
       />
     </>
   );
