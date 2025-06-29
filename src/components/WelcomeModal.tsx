@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Gift, Users, Plus } from 'lucide-react';
+import { Gift } from 'lucide-react';
 
 interface WelcomeModalProps {
   isOpen: boolean;
@@ -41,22 +41,6 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
               <span className="font-semibold text-green-600"> Add Money </span>
               to start getting paid from Fair Pay.
             </p>
-          </div>
-
-          <div className="bg-green-50 rounded-xl p-4 space-y-3">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <Users className="w-4 h-4 text-green-600" />
-              </div>
-              <span className="text-sm text-green-700">Join our community</span>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <Plus className="w-4 h-4 text-green-600" />
-              </div>
-              <span className="text-sm text-green-700">Add money to get started</span>
-            </div>
           </div>
 
           <div className="flex space-x-3">

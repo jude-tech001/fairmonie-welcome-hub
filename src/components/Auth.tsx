@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, EyeOff, Shield, CreditCard } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface AuthProps {
   onAuthSuccess: (user: { name: string; email: string }) => void;
@@ -15,6 +16,14 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [isLoading, setIsLoading] = useState(false);
+
+  const bannerImages = [
+    '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
+    '/lovable-uploads/40215c09-c6f9-4d2c-af14-e141b137c0b2.png',
+    '/lovable-uploads/f1edd580-b9dd-4b28-b2d8-01c503af340c.png',
+    '/lovable-uploads/05876cc6-a87a-48f3-b83e-4d4d8ca1585a.png',
+    '/lovable-uploads/56604a59-7124-43a2-b11a-bfa4e41db3be.png'
+  ];
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +53,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen gradient-green flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen gradient-green flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-32 h-32 bg-white rounded-full blur-xl"></div>
@@ -52,19 +61,37 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-lg"></div>
       </div>
 
+      {/* Banner Carousel */}
+      <div className="w-full max-w-md mb-6 relative z-10">
+        <Carousel className="w-full">
+          <CarouselContent>
+            {bannerImages.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <Card className="border-0 shadow-lg overflow-hidden">
+                    <CardContent className="p-0">
+                      <img 
+                        src={image} 
+                        alt={`FairMoney Banner ${index + 1}`}
+                        className="w-full h-48 object-cover"
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
+
       <Card className="w-full max-w-md relative z-10 shadow-2xl border-0 bg-white/95 backdrop-blur-sm animate-fadeIn">
         <CardHeader className="text-center pb-4">
-          <div className="flex items-center justify-center mb-4">
-            <div className="relative">
-              <CreditCard className="w-12 h-12 text-green-600" />
-              <Shield className="w-6 h-6 text-green-500 absolute -top-1 -right-1" />
-            </div>
-          </div>
           <CardTitle className="text-3xl font-bold gradient-green bg-clip-text text-transparent mb-2">
             FairMonie Pay
           </CardTitle>
           <p className="text-sm text-gray-600">Your lifestyle bank</p>
-          <p className="text-xs text-gray-500 mt-1">Insured by NDIC and licensed by CBN</p>
         </CardHeader>
 
         <CardContent>

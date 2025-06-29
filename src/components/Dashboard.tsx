@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   Plus, 
   ArrowUpRight, 
@@ -39,10 +40,11 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
   const [balance] = useState(0.00);
   const [showBalance, setShowBalance] = useState(true);
+  const [showTransactionHistory, setShowTransactionHistory] = useState(false);
 
   const quickActions = [
-    { title: 'To OPay', icon: Users, color: 'bg-green-100 text-green-600' },
-    { title: 'To Bank', icon: Building, color: 'bg-green-100 text-green-600' },
+    { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600' },
+    { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600' },
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
   ];
 
@@ -92,7 +94,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
           <div className="flex items-center space-x-3">
             <Headphones className="w-6 h-6 text-gray-600" />
             <Maximize className="w-6 h-6 text-gray-600" />
-            <Bell className="w-6 h-6 text-gray-600" />
+            <button
+              onClick={() => setShowTransactionHistory(true)}
+              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <Bell className="w-6 h-6 text-gray-600" />
+            </button>
           </div>
         </div>
       </div>
@@ -112,17 +119,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
                   <Eye className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm">Transaction History</span>
-                <History className="w-4 h-4" />
-              </div>
             </div>
             
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-3xl font-bold mb-2">
-                  {showBalance ? `₦${balance.toLocaleString()}.00` : '****'}
-                </div>
+            <div className="flex flex-col items-center justify-center text-center mb-6">
+              <div className="text-3xl font-bold mb-4">
+                {showBalance ? `₦${balance.toLocaleString()}.00` : '****'}
               </div>
               <Button
                 onClick={onAddMoney}
@@ -134,41 +135,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
             </div>
           </CardContent>
         </Card>
-
-        {/* Transaction History */}
-        {transactions.length > 0 && (
-          <div className="space-y-3">
-            {transactions.map((transaction) => (
-              <Card key={transaction.id} className="bg-white shadow-sm border border-gray-100">
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      transaction.type === 'in' ? 'bg-green-100' : 'bg-red-100'
-                    }`}>
-                      {transaction.type === 'in' ? (
-                        <ArrowDownLeft className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <ArrowUpRight className="w-5 h-5 text-red-600" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900 text-sm">{transaction.title}</p>
-                      <p className="text-xs text-gray-500">{transaction.date}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className={`font-semibold ${
-                        transaction.type === 'in' ? 'text-green-600' : 'text-gray-900'
-                      }`}>
-                        {transaction.type === 'in' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
-                      </p>
-                      <p className="text-xs text-green-500">{transaction.status}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
 
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-4">
@@ -213,6 +179,49 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Transaction History Modal */}
+      <Dialog open={showTransactionHistory} onOpenChange={setShowTransactionHistory}>
+        <DialogContent className="sm:max-w-md mx-4">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <History className="w-5 h-5 text-green-600" />
+              <span>Transaction History</span>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {transactions.map((transaction) => (
+              <Card key={transaction.id} className="bg-white shadow-sm border border-gray-100">
+                <CardContent className="p-4">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      transaction.type === 'in' ? 'bg-green-100' : 'bg-red-100'
+                    }`}>
+                      {transaction.type === 'in' ? (
+                        <ArrowDownLeft className="w-5 h-5 text-green-600" />
+                      ) : (
+                        <ArrowUpRight className="w-5 h-5 text-red-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900 text-sm">{transaction.title}</p>
+                      <p className="text-xs text-gray-500">{transaction.date}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`font-semibold ${
+                        transaction.type === 'in' ? 'text-green-600' : 'text-gray-900'
+                      }`}>
+                        {transaction.type === 'in' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-green-500">{transaction.status}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
