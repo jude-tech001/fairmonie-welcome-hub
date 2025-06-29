@@ -22,7 +22,8 @@ import {
   MoreHorizontal,
   Headphones,
   Maximize,
-  Bell
+  Bell,
+  Gift
 } from 'lucide-react';
 
 interface User {
