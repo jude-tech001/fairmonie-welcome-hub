@@ -92,11 +92,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
             <span className="text-lg font-medium text-gray-900">Hi, {user.name}</span>
           </div>
           <div className="flex items-center space-x-3">
-            <Headphones className="w-6 h-6 text-gray-600" />
-            <Maximize className="w-6 h-6 text-gray-600" />
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Headphones className="w-6 h-6 text-gray-600" />
+            </button>
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <Maximize className="w-6 h-6 text-gray-600" />
+            </button>
             <button
               onClick={() => setShowTransactionHistory(true)}
-              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
               <Bell className="w-6 h-6 text-gray-600" />
             </button>

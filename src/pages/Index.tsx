@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Auth from '@/components/Auth';
 import Dashboard from '@/components/Dashboard';
 import WelcomeModal from '@/components/WelcomeModal';
+import JoinGroup from '@/components/JoinGroup';
 import { toast } from '@/hooks/use-toast';
 
 interface User {
@@ -13,6 +14,7 @@ interface User {
 const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showJoinGroup, setShowJoinGroup] = useState(false);
 
   const handleAuthSuccess = (userData: User) => {
     setUser(userData);
@@ -31,6 +33,20 @@ const Index = () => {
     setShowWelcomeModal(false);
   };
 
+  const handleJoinGroup = () => {
+    setShowWelcomeModal(false);
+    setShowJoinGroup(true);
+  };
+
+  const handleBackToWelcome = () => {
+    setShowJoinGroup(false);
+    setShowWelcomeModal(true);
+  };
+
+  const handleCloseJoinGroup = () => {
+    setShowJoinGroup(false);
+  };
+
   if (!user) {
     return <Auth onAuthSuccess={handleAuthSuccess} />;
   }
@@ -42,6 +58,12 @@ const Index = () => {
         isOpen={showWelcomeModal}
         onClose={handleCloseWelcomeModal}
         userName={user.name}
+        onJoinGroup={handleJoinGroup}
+      />
+      <JoinGroup
+        isOpen={showJoinGroup}
+        onClose={handleCloseJoinGroup}
+        onBack={handleBackToWelcome}
       />
     </>
   );

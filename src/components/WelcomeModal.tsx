@@ -8,15 +8,10 @@ interface WelcomeModalProps {
   isOpen: boolean;
   onClose: () => void;
   userName: string;
+  onJoinGroup: () => void;
 }
 
-const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }) => {
-  const handleJoinUs = () => {
-    // Simulate joining a group
-    window.open('https://wa.me/message/example', '_blank');
-    onClose();
-  };
-
+const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName, onJoinGroup }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md mx-4 rounded-2xl border-0 p-0 overflow-hidden bg-white">
@@ -36,7 +31,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
             <p className="text-gray-700 leading-relaxed">
               Hello <span className="font-semibold text-green-600">{userName}</span>! 👋
             </p>
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <p className="text-gray-600 text-sm leading-relaxed text-center">
               Welcome to FairMonie Pay! Kindly join our group and click on 
               <span className="font-semibold text-green-600"> Add Money </span>
               to start getting paid from Fair Pay.
@@ -52,7 +47,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
               Close
             </Button>
             <Button
-              onClick={handleJoinUs}
+              onClick={onJoinGroup}
               className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all duration-200 transform hover:scale-105"
             >
               Join Us

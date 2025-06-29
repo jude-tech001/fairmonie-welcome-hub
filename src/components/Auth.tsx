@@ -1,10 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface AuthProps {
@@ -16,6 +15,8 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
   const bannerImages = [
     '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
@@ -24,6 +25,28 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     '/lovable-uploads/05876cc6-a87a-48f3-b83e-4d4d8ca1585a.png',
     '/lovable-uploads/56604a59-7124-43a2-b11a-bfa4e41db3be.png'
   ];
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+
+    // Auto-scroll functionality
+    const interval = setInterval(() => {
+      if (api) {
+        const nextIndex = (current + 1) % bannerImages.length;
+        api.scrollTo(nextIndex);
+      }
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [api, current, bannerImages.length]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +86,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
 
       {/* Banner Carousel */}
       <div className="w-full max-w-md mb-6 relative z-10">
-        <Carousel className="w-full">
+        <Carousel className="w-full" setApi={setApi}>
           <CarouselContent>
             {bannerImages.map((image, index) => (
               <CarouselItem key={index}>
@@ -73,7 +96,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-32 object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -91,7 +114,6 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
           <CardTitle className="text-3xl font-bold gradient-green bg-clip-text text-transparent mb-2">
             FairMonie Pay
           </CardTitle>
-          <p className="text-sm text-gray-600">Your lifestyle bank</p>
         </CardHeader>
 
         <CardContent>
