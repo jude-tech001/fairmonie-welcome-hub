@@ -12,9 +12,13 @@ interface WelcomeModalProps {
 }
 
 const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName, onJoinGroup }) => {
+  const handleTelegramJoin = () => {
+    window.open('https://t.me/sportybet_balance_adder_2025', '_blank');
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md mx-4 rounded-2xl border-0 p-0 overflow-hidden bg-white">
+      <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="gradient-green-light p-6 text-white text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Gift className="w-10 h-10 text-white" />
@@ -32,9 +36,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName, 
               Hello <span className="font-semibold text-green-600">{userName}</span>! 👋
             </p>
             <p className="text-gray-600 text-sm leading-relaxed text-center">
-              Welcome to FairMonie Pay! Kindly join our group and click on 
-              <span className="font-semibold text-green-600"> Add Money </span>
-              to start getting paid from Fair Pay.
+              Welcome to FairMonie Pay! Join our Telegram channel to get started and receive updates.
             </p>
           </div>
 
@@ -47,10 +49,10 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName, 
               Close
             </Button>
             <Button
-              onClick={onJoinGroup}
+              onClick={handleTelegramJoin}
               className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all duration-200 transform hover:scale-105"
             >
-              Join Us
+              Join Telegram
             </Button>
           </div>
         </div>

@@ -24,7 +24,7 @@ import {
   Headphones,
   Maximize,
   Bell,
-  Gift
+  LogOut
 } from 'lucide-react';
 
 interface User {
@@ -35,16 +35,18 @@ interface User {
 interface DashboardProps {
   user: User;
   onAddMoney: () => void;
+  onLogout?: () => void;
+  onJoinGroup?: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
+const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout, onJoinGroup }) => {
   const [balance] = useState(0.00);
   const [showBalance, setShowBalance] = useState(true);
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600' },
-    { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600' },
+    { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600', onClick: onJoinGroup },
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
   ];
 
@@ -144,7 +146,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
         <div className="grid grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
             <Card key={index} className="bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer">
-              <CardContent className="p-4 text-center">
+              <CardContent className="p-4 text-center" onClick={action.onClick}>
                 <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center mx-auto mb-3`}>
                   <action.icon className="w-6 h-6" />
                 </div>
@@ -168,18 +170,17 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney }) => {
           ))}
         </div>
 
-        {/* Promotional Banner */}
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0 shadow-lg">
+        {/* Logout Button */}
+        <Card className="bg-white border border-gray-200 shadow-sm">
           <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <Gift className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <p className="font-semibold">Cash up for grabs!</p>
-                <p className="text-sm opacity-90">Invite friends to earn up to ₦5,600 Bonus</p>
-              </div>
-            </div>
+            <Button
+              onClick={onLogout}
+              variant="outline"
+              className="w-full h-12 rounded-full border-red-200 text-red-600 hover:bg-red-50 transition-all duration-200"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Log Out
+            </Button>
           </CardContent>
         </Card>
       </div>
