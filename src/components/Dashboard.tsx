@@ -25,7 +25,8 @@ import {
   Maximize,
   Bell,
   Gift,
-  Loader2
+  Loader2,
+  ShieldCheck
 } from 'lucide-react';
 import AddMoneyModal from '@/components/AddMoneyModal';
 import JoinGroup from '@/components/JoinGroup';
