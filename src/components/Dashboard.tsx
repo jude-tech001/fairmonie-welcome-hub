@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -42,6 +42,8 @@ import SupportPage from '@/components/SupportPage';
 import LiveChat from '@/components/LiveChat';
 import ProfileMenu from '@/components/ProfileMenu';
 import InviteEarn from '@/components/InviteEarn';
+import TVRechargePage from '@/components/TVRechargePage';
+import BettingPage from '@/components/BettingPage';
 
 interface User {
   name: string;
@@ -64,6 +66,21 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showLiveChat, setShowLiveChat] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showInviteEarn, setShowInviteEarn] = useState(false);
+  const [showTVRecharge, setShowTVRecharge] = useState(false);
+  const [showBetting, setShowBetting] = useState(false);
+
+  // Load balance from localStorage on component mount
+  useEffect(() => {
+    const savedBalance = localStorage.getItem(`userBalance_${user.email}`);
+    if (savedBalance) {
+      setBalance(parseFloat(savedBalance));
+    }
+  }, [user.email]);
+
+  // Save balance to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(`userBalance_${user.email}`, balance.toString());
+  }, [balance, user.email]);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },
@@ -74,8 +91,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const services = [
     { title: 'Airtime', icon: Smartphone, color: 'bg-green-100 text-green-600' },
     { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600' },
-    { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600' },
-    { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600' },
+    { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
+    { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
     { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
     { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600' },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
@@ -125,6 +142,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   if (showInviteEarn) {
     return <InviteEarn onBack={() => setShowInviteEarn(false)} user={user} />;
+  }
+
+  if (showTVRecharge) {
+    return <TVRechargePage onBack={() => setShowTVRecharge(false)} />;
+  }
+
+  if (showBetting) {
+    return <BettingPage onBack={() => setShowBetting(false)} />;
   }
 
   return (

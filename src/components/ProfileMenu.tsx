@@ -10,11 +10,22 @@ interface ProfileMenuProps {
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user }) => {
   const handleProfileInfo = () => {
-    alert('Profile information feature coming soon!');
+    alert(`Profile Information:\nName: ${user.name}\nEmail: ${user.email}`);
   };
 
   const handleAbout = () => {
-    alert('About FairMonie Pay: Your trusted financial partner.');
+    alert(`About FairMonie Pay:
+
+FairMonie is an automated online moneylender that provides single payment loans and bonus claims, installment loans and payroll loans for borrowers. The amount borrowed is then deducted from your account.
+
+What we offer:
+• Data purchase
+• Airtime purchase
+• All TV subscriptions
+• Betting subscription
+• Withdrawals
+
+FairMonie Pay is licensed by CBN. All payments are sure and secured with FairPay.`);
   };
 
   const handleDownloadApp = () => {
@@ -47,13 +58,13 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user }) => {
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-4">
+      <div className="px-4 py-6 space-y-3">
         {menuItems.map((item, index) => (
           <Card key={index} className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={item.onClick}>
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <item.icon className="w-6 h-6 text-green-600" />
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <item.icon className="w-5 h-5 text-green-600" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">{item.title}</h3>

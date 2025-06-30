@@ -36,7 +36,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
+      <div className="px-4 py-6 space-y-4">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">How can we help you?</h2>
           <p className="text-gray-600 mb-6">
@@ -45,13 +45,13 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
         </div>
 
         <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleTelegramSupport}>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                <Send className="w-8 h-8 text-blue-600" />
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Send className="w-6 h-6 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Telegram Support</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Telegram Support</h3>
                 <p className="text-sm text-gray-600">Get instant support through our Telegram channel</p>
               </div>
             </div>
@@ -59,13 +59,13 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
         </Card>
 
         <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleEmailSupport}>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                <Mail className="w-8 h-8 text-red-600" />
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Mail className="w-6 h-6 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Email Support</h3>
                 <p className="text-sm text-gray-600">Send us an email and we'll get back to you within 24 hours</p>
               </div>
             </div>
@@ -73,13 +73,13 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
         </Card>
 
         <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleChatBot}>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
-                <Bot className="w-8 h-8 text-purple-600" />
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Bot className="w-6 h-6 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Chat Bot</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Chat Bot</h3>
                 <p className="text-sm text-gray-600">Get instant answers to common questions</p>
               </div>
             </div>

@@ -68,7 +68,7 @@ const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose, onBonusC
   if (showSuccess) {
     return (
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md mx-4 rounded-2xl border-0 p-0 overflow-hidden bg-white">
+        <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="p-6 text-center space-y-6">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <CheckCircle className="w-10 h-10 text-green-600" />
@@ -93,7 +93,7 @@ const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose, onBonusC
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md mx-4 rounded-2xl border-0 p-0 overflow-hidden bg-white">
+      <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="gradient-green-light p-6 text-white text-center">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-white">
