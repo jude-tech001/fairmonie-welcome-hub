@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowLeft, DollarSign, Loader2, CheckCircle } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
 
 interface LoanPageProps {
   onBack: () => void;
@@ -21,7 +22,30 @@ const LoanPage: React.FC<LoanPageProps> = ({ onBack }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const banks = ['First Bank', 'GTBank', 'Access Bank', 'Zenith Bank', 'UBA', 'Fidelity Bank'];
+  const banks = [
+    'Access Bank', 'First Bank', 'GTBank', 'Zenith Bank', 'UBA', 'Fidelity Bank',
+    'Sterling Bank', 'Union Bank', 'Wema Bank', 'FCMB', 'Heritage Bank',
+    'Keystone Bank', 'Polaris Bank', 'Stanbic IBTC', 'Standard Chartered',
+    'Unity Bank', 'Providus Bank', 'Jaiz Bank', 'SunTrust Bank', 'Titan Trust Bank',
+    'Globus Bank', 'Parallex Bank', 'Premium Trust Bank', 'Optimus Bank',
+    'Moniepoint MFB', 'Kuda Bank', 'Opay', 'PalmPay', 'Carbon', 'Rubies Bank',
+    'Mint MFB', 'Sparkle MFB', 'Renmoney MFB', 'LAPO MFB', 'AB MFB',
+    'Accion MFB', 'Above Only MFB', 'Adeyemi College Staff MFB', 'Aelex MFB',
+    'Afekhafe MFB', 'Agosasa MFB', 'Ahmadu Bello University MFB', 'Ajaokuta Steel MFB',
+    'Akwa United MFB', 'Alekun MFB', 'Alvana MFB', 'Amju Unique MFB',
+    'Assetmatrix MFB', 'Baines Credit MFB', 'Bowen MFB', 'Branch MFB',
+    'Citi MFB', 'Corestep MFB', 'Daylight MFB', 'Dot MFB',
+    'Ekimogun MFB', 'Finca MFB', 'Gateway MFB', 'Greenbank MFB',
+    'Hackman MFB', 'Hasal MFB', 'Ibile MFB', 'Ikoyi Osborn MFB',
+    'Imowo MFB', 'Infinity MFB', 'Kredi Money MFB', 'Lagos Building MFB',
+    'Links MFB', 'Living Trust MFB', 'Lovonus MFB', 'Mainstreet MFB',
+    'Mkobo MFB', 'NPF MFB', 'Okpoga MFB', 'Page MFB',
+    'Parkway MFB', 'Peace MFB', 'Personal Trust MFB', 'Petra MFB',
+    'Purplemoney MFB', 'Regent MFB', 'Relief MFB', 'Royal Exchange MFB',
+    'Safe Haven MFB', 'Seedvest MFB', 'Stellas MFB', 'TCF MFB',
+    'Unaab MFB', 'Unical MFB', 'VFD MFB', 'Visa MFB',
+    'Virtue MFB', 'Wetland MFB', 'Xslnce MFB', 'Yes MFB'
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,24 +156,20 @@ const LoanPage: React.FC<LoanPageProps> = ({ onBack }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Bank Name
+                  Select Bank
                 </label>
-                <div className="grid grid-cols-1 gap-2">
-                  {banks.map((bank) => (
-                    <button
-                      key={bank}
-                      type="button"
-                      onClick={() => setBankName(bank)}
-                      className={`p-3 border rounded-lg text-center transition-colors ${
-                        bankName === bank
-                          ? 'bg-green-100 border-green-500 text-green-700'
-                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      {bank}
-                    </button>
-                  ))}
-                </div>
+                <Select value={bankName} onValueChange={setBankName}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your bank" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60 overflow-y-auto">
+                    {banks.map((bank) => (
+                      <SelectItem key={bank} value={bank}>
+                        {bank}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
