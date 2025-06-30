@@ -6,28 +6,11 @@ import { ArrowLeft, User, Info, Download, Play } from 'lucide-react';
 interface ProfileMenuProps {
   onBack: () => void;
   user: { name: string; email: string };
+  onProfileInfo: () => void;
+  onAbout: () => void;
 }
 
-const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user }) => {
-  const handleProfileInfo = () => {
-    alert(`Profile Information:\nName: ${user.name}\nEmail: ${user.email}`);
-  };
-
-  const handleAbout = () => {
-    alert(`About FairMonie Pay:
-
-FairMonie is an automated online moneylender that provides single payment loans and bonus claims, installment loans and payroll loans for borrowers. The amount borrowed is then deducted from your account.
-
-What we offer:
-• Data purchase
-• Airtime purchase
-• All TV subscriptions
-• Betting subscription
-• Withdrawals
-
-FairMonie Pay is licensed by CBN. All payments are sure and secured with FairPay.`);
-  };
-
+const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, onAbout }) => {
   const handleDownloadApp = () => {
     alert('Mobile app download coming soon!');
   };
@@ -37,8 +20,8 @@ FairMonie Pay is licensed by CBN. All payments are sure and secured with FairPay
   };
 
   const menuItems = [
-    { title: 'Profile Information', icon: User, onClick: handleProfileInfo },
-    { title: 'About', icon: Info, onClick: handleAbout },
+    { title: 'Profile Information', icon: User, onClick: onProfileInfo },
+    { title: 'About', icon: Info, onClick: onAbout },
     { title: 'Download App', icon: Download, onClick: handleDownloadApp },
     { title: 'Watch Tutorial', icon: Play, onClick: handleWatchTutorial }
   ];

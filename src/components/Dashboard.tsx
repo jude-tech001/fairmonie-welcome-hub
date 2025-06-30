@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -44,6 +43,11 @@ import ProfileMenu from '@/components/ProfileMenu';
 import InviteEarn from '@/components/InviteEarn';
 import TVRechargePage from '@/components/TVRechargePage';
 import BettingPage from '@/components/BettingPage';
+import AboutPage from '@/components/AboutPage';
+import ProfileInfoPage from '@/components/ProfileInfoPage';
+import AirtimePage from '@/components/AirtimePage';
+import DataPage from '@/components/DataPage';
+import LoanPage from '@/components/LoanPage';
 
 interface User {
   name: string;
@@ -68,6 +72,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showInviteEarn, setShowInviteEarn] = useState(false);
   const [showTVRecharge, setShowTVRecharge] = useState(false);
   const [showBetting, setShowBetting] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [showProfileInfo, setShowProfileInfo] = useState(false);
+  const [showAirtime, setShowAirtime] = useState(false);
+  const [showData, setShowData] = useState(false);
+  const [showLoan, setShowLoan] = useState(false);
 
   // Load balance from localStorage on component mount
   useEffect(() => {
@@ -89,12 +98,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   ];
 
   const services = [
-    { title: 'Airtime', icon: Smartphone, color: 'bg-green-100 text-green-600' },
-    { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600' },
+    { title: 'Airtime', icon: Smartphone, color: 'bg-green-100 text-green-600', onClick: () => setShowAirtime(true) },
+    { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600', onClick: () => setShowData(true) },
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
     { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
-    { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600' },
+    { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
   ];
@@ -137,7 +146,28 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   }
 
   if (showProfileMenu) {
-    return <ProfileMenu onBack={() => setShowProfileMenu(false)} user={user} />;
+    return (
+      <ProfileMenu 
+        onBack={() => setShowProfileMenu(false)} 
+        user={user}
+        onProfileInfo={() => {
+          setShowProfileMenu(false);
+          setShowProfileInfo(true);
+        }}
+        onAbout={() => {
+          setShowProfileMenu(false);
+          setShowAbout(true);
+        }}
+      />
+    );
+  }
+
+  if (showAbout) {
+    return <AboutPage onBack={() => setShowAbout(false)} />;
+  }
+
+  if (showProfileInfo) {
+    return <ProfileInfoPage onBack={() => setShowProfileInfo(false)} user={user} />;
   }
 
   if (showInviteEarn) {
@@ -150,6 +180,18 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   if (showBetting) {
     return <BettingPage onBack={() => setShowBetting(false)} />;
+  }
+
+  if (showAirtime) {
+    return <AirtimePage onBack={() => setShowAirtime(false)} />;
+  }
+
+  if (showData) {
+    return <DataPage onBack={() => setShowData(false)} />;
+  }
+
+  if (showLoan) {
+    return <LoanPage onBack={() => setShowLoan(false)} />;
   }
 
   return (

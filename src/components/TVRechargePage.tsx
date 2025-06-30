@@ -141,7 +141,7 @@ const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
                   type="text"
                   value={fairCode}
                   onChange={(e) => setFairCode(e.target.value)}
-                  placeholder="Enter your faircode (e.g., F-187377)"
+                  placeholder="Enter your faircode (e.g., F-245698)"
                   className="w-full"
                 />
               </div>

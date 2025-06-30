@@ -3,29 +3,28 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Target, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Wifi, Loader2, CheckCircle } from 'lucide-react';
 
-interface BettingPageProps {
+interface DataPageProps {
   onBack: () => void;
 }
 
-const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
+const DataPage: React.FC<DataPageProps> = ({ onBack }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [amount, setAmount] = useState('');
-  const [selectedBetting, setSelectedBetting] = useState('');
+  const [selectedNetwork, setSelectedNetwork] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState('');
   const [fairCode, setFairCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const bettingPlatforms = [
-    'SportyBet', 'Bet9ja', '1xBet', 'BetKing'
-  ];
+  const networks = ['MTN', 'Airtel', 'Glo', '9mobile'];
+  const dataPlans = ['1GB - ₦300', '2GB - ₦600', '5GB - ₦1,500', '10GB - ₦3,000'];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phoneNumber || !amount || !selectedBetting || !fairCode) {
+    if (!phoneNumber || !selectedNetwork || !selectedPlan || !fairCode) {
       return;
     }
 
@@ -40,8 +39,8 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
       return;
     }
 
-    // 3 seconds loading
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // 7 seconds loading
+    await new Promise(resolve => setTimeout(resolve, 7000));
 
     setIsLoading(false);
     setShowSuccess(true);
@@ -50,8 +49,8 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
   const handleSuccessOk = () => {
     setShowSuccess(false);
     setPhoneNumber('');
-    setAmount('');
-    setSelectedBetting('');
+    setSelectedNetwork('');
+    setSelectedPlan('');
     setFairCode('');
   };
 
@@ -64,9 +63,9 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
               <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Transaction Successful!</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Purchase Successful!</h3>
               <p className="text-gray-600">
-                Your {selectedBetting} account has been funded with ₦{amount} successfully.
+                {selectedPlan} data has been sent to {phoneNumber} on {selectedNetwork} network successfully.
               </p>
             </div>
             <Button
@@ -92,7 +91,7 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
           >
             <ArrowLeft className="w-6 h-6 text-gray-600" />
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">Betting</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Buy Data</h1>
         </div>
       </div>
 
@@ -108,41 +107,50 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Enter your phone number"
+                  placeholder="Enter phone number"
                   className="w-full"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Amount
-                </label>
-                <Input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="Enter amount"
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Betting Platform
+                  Select Network
                 </label>
                 <div className="grid grid-cols-2 gap-3">
-                  {bettingPlatforms.map((platform) => (
+                  {networks.map((network) => (
                     <button
-                      key={platform}
+                      key={network}
                       type="button"
-                      onClick={() => setSelectedBetting(platform)}
+                      onClick={() => setSelectedNetwork(network)}
                       className={`p-3 border rounded-lg text-center transition-colors ${
-                        selectedBetting === platform
+                        selectedNetwork === network
                           ? 'bg-green-100 border-green-500 text-green-700'
                           : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      {platform}
+                      {network}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Data Plan
+                </label>
+                <div className="space-y-2">
+                  {dataPlans.map((plan) => (
+                    <button
+                      key={plan}
+                      type="button"
+                      onClick={() => setSelectedPlan(plan)}
+                      className={`w-full p-3 border rounded-lg text-center transition-colors ${
+                        selectedPlan === plan
+                          ? 'bg-green-100 border-green-500 text-green-700'
+                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {plan}
                     </button>
                   ))}
                 </div>
@@ -171,13 +179,13 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
 
               <Button
                 type="submit"
-                disabled={!phoneNumber || !amount || !selectedBetting || !fairCode || isLoading}
+                disabled={!phoneNumber || !selectedNetwork || !selectedPlan || !fairCode || isLoading}
                 className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-full disabled:opacity-50"
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Processing Transaction...
+                    Processing Purchase...
                   </>
                 ) : (
                   'Submit'
@@ -191,4 +199,4 @@ const BettingPage: React.FC<BettingPageProps> = ({ onBack }) => {
   );
 };
 
-export default BettingPage;
+export default DataPage;
