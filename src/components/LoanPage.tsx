@@ -1,11 +1,9 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import LoanForm from '@/components/loan/LoanForm';
+import LoanConfirmModal from '@/components/loan/LoanConfirmModal';
+import LoanSuccessPage from '@/components/loan/LoanSuccessPage';
 
 interface LoanPageProps {
   onBack: () => void;
@@ -21,31 +19,6 @@ const LoanPage: React.FC<LoanPageProps> = ({ onBack }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
-
-  const banks = [
-    'Access Bank', 'First Bank', 'GTBank', 'Zenith Bank', 'UBA', 'Fidelity Bank',
-    'Sterling Bank', 'Union Bank', 'Wema Bank', 'FCMB', 'Heritage Bank',
-    'Keystone Bank', 'Polaris Bank', 'Stanbic IBTC', 'Standard Chartered',
-    'Unity Bank', 'Providus Bank', 'Jaiz Bank', 'SunTrust Bank', 'Titan Trust Bank',
-    'Globus Bank', 'Parallex Bank', 'Premium Trust Bank', 'Optimus Bank',
-    'Moniepoint MFB', 'Kuda Bank', 'Opay', 'PalmPay', 'Carbon', 'Rubies Bank',
-    'Mint MFB', 'Sparkle MFB', 'Renmoney MFB', 'LAPO MFB', 'AB MFB',
-    'Accion MFB', 'Above Only MFB', 'Adeyemi College Staff MFB', 'Aelex MFB',
-    'Afekhafe MFB', 'Agosasa MFB', 'Ahmadu Bello University MFB', 'Ajaokuta Steel MFB',
-    'Akwa United MFB', 'Alekun MFB', 'Alvana MFB', 'Amju Unique MFB',
-    'Assetmatrix MFB', 'Baines Credit MFB', 'Bowen MFB', 'Branch MFB',
-    'Citi MFB', 'Corestep MFB', 'Daylight MFB', 'Dot MFB',
-    'Ekimogun MFB', 'Finca MFB', 'Gateway MFB', 'Greenbank MFB',
-    'Hackman MFB', 'Hasal MFB', 'Ibile MFB', 'Ikoyi Osborn MFB',
-    'Imowo MFB', 'Infinity MFB', 'Kredi Money MFB', 'Lagos Building MFB',
-    'Links MFB', 'Living Trust MFB', 'Lovonus MFB', 'Mainstreet MFB',
-    'Mkobo MFB', 'NPF MFB', 'Okpoga MFB', 'Page MFB',
-    'Parkway MFB', 'Peace MFB', 'Personal Trust MFB', 'Petra MFB',
-    'Purplemoney MFB', 'Regent MFB', 'Relief MFB', 'Royal Exchange MFB',
-    'Safe Haven MFB', 'Seedvest MFB', 'Stellas MFB', 'TCF MFB',
-    'Unaab MFB', 'Unical MFB', 'VFD MFB', 'Visa MFB',
-    'Virtue MFB', 'Wetland MFB', 'Xslnce MFB', 'Yes MFB'
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,27 +58,10 @@ const LoanPage: React.FC<LoanPageProps> = ({ onBack }) => {
 
   if (showSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6 text-center space-y-6">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle className="w-10 h-10 text-green-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Loan Approved!</h3>
-              <p className="text-gray-600">
-                Your loan application for ₦{loanAmount} has been approved successfully. The amount will be credited to your account shortly.
-              </p>
-            </div>
-            <Button
-              onClick={handleSuccessOk}
-              className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-full"
-            >
-              OK
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <LoanSuccessPage 
+        loanAmount={loanAmount}
+        onOk={handleSuccessOk}
+      />
     );
   }
 
@@ -125,136 +81,28 @@ const LoanPage: React.FC<LoanPageProps> = ({ onBack }) => {
       </div>
 
       <div className="px-4 py-6">
-        <Card>
-          <CardContent className="p-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Number
-                </label>
-                <Input
-                  type="text"
-                  value={accountNumber}
-                  onChange={(e) => setAccountNumber(e.target.value)}
-                  placeholder="Enter account number"
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Account Name
-                </label>
-                <Input
-                  type="text"
-                  value={accountName}
-                  onChange={(e) => setAccountName(e.target.value)}
-                  placeholder="Enter account name"
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Bank
-                </label>
-                <Select value={bankName} onValueChange={setBankName}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select your bank" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60 overflow-y-auto">
-                    {banks.map((bank) => (
-                      <SelectItem key={bank} value={bank}>
-                        {bank}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Enter Loan Amount
-                </label>
-                <Input
-                  type="number"
-                  value={loanAmount}
-                  onChange={(e) => setLoanAmount(e.target.value)}
-                  placeholder="Enter loan amount"
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fair Code
-                </label>
-                <Input
-                  type="text"
-                  value={fairCode}
-                  onChange={(e) => setFairCode(e.target.value)}
-                  placeholder="Enter your faircode"
-                  className="w-full"
-                />
-              </div>
-
-              {showError && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-700 text-sm">
-                    Wrong faircode! Contact support to get your faircode.
-                  </p>
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                disabled={!accountNumber || !accountName || !bankName || !loanAmount || !fairCode || isLoading}
-                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-full disabled:opacity-50"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Processing Application...
-                  </>
-                ) : (
-                  'Proceed'
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <LoanForm
+          accountNumber={accountNumber}
+          setAccountNumber={setAccountNumber}
+          accountName={accountName}
+          setAccountName={setAccountName}
+          bankName={bankName}
+          setBankName={setBankName}
+          loanAmount={loanAmount}
+          setLoanAmount={setLoanAmount}
+          fairCode={fairCode}
+          setFairCode={setFairCode}
+          showError={showError}
+          isLoading={isLoading}
+          onSubmit={handleSubmit}
+        />
       </div>
 
-      {/* Confirmation Modal */}
-      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
-        <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="p-6 text-center space-y-6">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-bold text-gray-900">
-                Confirm Loan Application
-              </DialogTitle>
-            </DialogHeader>
-            <p className="text-gray-600">
-              Loan request submitted. Are you sure all your details are correct?
-            </p>
-            <div className="flex space-x-3">
-              <Button
-                onClick={() => setShowConfirmModal(false)}
-                variant="outline"
-                className="flex-1 h-12 rounded-full border-gray-200 text-gray-600 hover:bg-gray-50"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleConfirmProceed}
-                className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white rounded-full"
-              >
-                Proceed
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <LoanConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={handleConfirmProceed}
+      />
     </div>
   );
 };
