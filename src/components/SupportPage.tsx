@@ -9,11 +9,11 @@ interface SupportPageProps {
 
 const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
   const handleTelegramSupport = () => {
-    window.open('https://t.me/sportybet_balance_adder_2025', '_blank');
+    window.open('https://t.me/fairmonie_earning_bot', '_blank');
   };
 
   const handleEmailSupport = () => {
-    window.open('mailto:support@fairmoniepay.com', '_blank');
+    window.open('fairmoniepays@gmail.com', '_blank');
   };
 
   const handleChatBot = () => {
