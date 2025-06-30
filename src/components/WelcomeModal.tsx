@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Gift, Send } from 'lucide-react';
+import { Gift } from 'lucide-react';
 
 interface WelcomeModalProps {
   isOpen: boolean;
@@ -18,7 +18,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white">
+      <DialogContent className="sm:max-w-md mx-auto rounded-2xl border-0 p-0 overflow-hidden bg-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="gradient-green-light p-6 text-white text-center">
           <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Gift className="w-10 h-10 text-white" />
@@ -36,25 +36,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
               Hello <span className="font-semibold text-green-600">{userName}</span>! 👋
             </p>
             <p className="text-gray-600 text-sm leading-relaxed text-center">
-              Welcome to FairMonie Pay! Join our Telegram channel to get updates and start earning with Fair Pay.
+              Welcome to FairMonie Pay! Join our community to get updates and start earning with Fair Pay.
             </p>
-          </div>
-
-          <div className="space-y-3">
-            <div 
-              onClick={handleTelegramJoin}
-              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Send className="w-6 h-6 text-blue-600" />
-                </div>
-                <div className="flex-1 text-left">
-                  <h3 className="font-semibold text-gray-900">Join Telegram Channel</h3>
-                  <p className="text-sm text-gray-600">Get updates and tips</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="flex space-x-3">
@@ -69,7 +52,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose, userName }
               onClick={handleTelegramJoin}
               className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all duration-200 transform hover:scale-105"
             >
-              Join Now
+              Join Community
             </Button>
           </div>
         </div>

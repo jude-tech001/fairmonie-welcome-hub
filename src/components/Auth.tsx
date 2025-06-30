@@ -20,7 +20,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [current, setCurrent] = useState(0);
 
   const bannerImages = [
-    '/lovable-uploads/dbb2402c-cf5a-4978-a0b6-f2ea9a4c3a76.png',
+    '/lovable-uploads/81708208-cfcb-4017-87ca-de2fb211b9a4.png',
     '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
     '/lovable-uploads/40215c09-c6f9-4d2c-af14-e141b137c0b2.png',
     '/lovable-uploads/f1edd580-b9dd-4b28-b2d8-01c503af340c.png',

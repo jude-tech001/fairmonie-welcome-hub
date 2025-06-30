@@ -26,10 +26,22 @@ import {
   Bell,
   Gift,
   Loader2,
-  ShieldCheck
+  ShieldCheck,
+  MessageCircle,
+  Mail,
+  Bot,
+  User,
+  Info,
+  Download,
+  Play
 } from 'lucide-react';
 import AddMoneyModal from '@/components/AddMoneyModal';
-import JoinGroup from '@/components/JoinGroup';
+import TransactionHistory from '@/components/TransactionHistory';
+import JoinGroupPage from '@/components/JoinGroupPage';
+import SupportPage from '@/components/SupportPage';
+import LiveChat from '@/components/LiveChat';
+import ProfileMenu from '@/components/ProfileMenu';
+import InviteEarn from '@/components/InviteEarn';
 
 interface User {
   name: string;
@@ -48,9 +60,13 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
   const [showAddMoneyModal, setShowAddMoneyModal] = useState(false);
   const [showJoinGroup, setShowJoinGroup] = useState(false);
+  const [showSupport, setShowSupport] = useState(false);
+  const [showLiveChat, setShowLiveChat] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showInviteEarn, setShowInviteEarn] = useState(false);
 
   const quickActions = [
-    { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600' },
+    { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },
     { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600', onClick: () => setShowJoinGroup(true) },
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
   ];
@@ -62,27 +78,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600' },
     { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
     { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600' },
-    { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600' },
-    { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600' }
-  ];
-
-  const transactions = [
-    {
-      id: 1,
-      type: 'out',
-      title: 'Transfer to AKANJI KAMORU ADE...',
-      amount: 800.00,
-      date: 'Jun 28th, 12:13:08',
-      status: 'Successful'
-    },
-    {
-      id: 2,
-      type: 'in',
-      title: 'Transfer from BLUE PAY LTD',
-      amount: 200000.00,
-      date: 'Jun 28th, 08:33:04',
-      status: 'Successful'
-    }
+    { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
+    { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
   ];
 
   const handleAddMoneyClick = () => {
@@ -105,6 +102,31 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     }
   };
 
+  // Show full page components
+  if (showTransactionHistory) {
+    return <TransactionHistory onBack={() => setShowTransactionHistory(false)} />;
+  }
+
+  if (showJoinGroup) {
+    return <JoinGroupPage onBack={() => setShowJoinGroup(false)} />;
+  }
+
+  if (showSupport) {
+    return <SupportPage onBack={() => setShowSupport(false)} />;
+  }
+
+  if (showLiveChat) {
+    return <LiveChat onBack={() => setShowLiveChat(false)} user={user} />;
+  }
+
+  if (showProfileMenu) {
+    return <ProfileMenu onBack={() => setShowProfileMenu(false)} user={user} />;
+  }
+
+  if (showInviteEarn) {
+    return <InviteEarn onBack={() => setShowInviteEarn(false)} user={user} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -119,7 +141,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
             <span className="text-lg font-medium text-gray-900">Hi, {user.name}</span>
           </div>
           <div className="flex items-center space-x-3">
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <button 
+              onClick={() => setShowLiveChat(true)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
               <Headphones className="w-6 h-6 text-gray-600" />
             </button>
             <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -192,62 +217,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         </div>
       </div>
 
-      {/* Add Money Modal */}
+      {/* Add Money Modal - Centered */}
       <AddMoneyModal 
         isOpen={showAddMoneyModal}
         onClose={() => setShowAddMoneyModal(false)}
         onBonusClaimed={handleBonusClaimed}
       />
-
-      {/* Join Group Modal */}
-      <JoinGroup 
-        isOpen={showJoinGroup}
-        onClose={() => setShowJoinGroup(false)}
-        onBack={() => setShowJoinGroup(false)}
-      />
-
-      {/* Transaction History Modal */}
-      <Dialog open={showTransactionHistory} onOpenChange={setShowTransactionHistory}>
-        <DialogContent className="sm:max-w-md mx-4">
-          <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
-              <History className="w-5 h-5 text-green-600" />
-              <span>Transaction History</span>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3 max-h-96 overflow-y-auto">
-            {transactions.map((transaction) => (
-              <Card key={transaction.id} className="bg-white shadow-sm border border-gray-100">
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      transaction.type === 'in' ? 'bg-green-100' : 'bg-red-100'
-                    }`}>
-                      {transaction.type === 'in' ? (
-                        <ArrowDownLeft className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <ArrowUpRight className="w-5 h-5 text-red-600" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900 text-sm">{transaction.title}</p>
-                      <p className="text-xs text-gray-500">{transaction.date}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className={`font-semibold ${
-                        transaction.type === 'in' ? 'text-green-600' : 'text-gray-900'
-                      }`}>
-                        {transaction.type === 'in' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
-                      </p>
-                      <p className="text-xs text-green-500">{transaction.status}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
