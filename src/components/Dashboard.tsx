@@ -103,7 +103,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
     { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
-    { title: 'Loan', icon: () => <span className="text-green-600 font-bold">₦</span>, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
+    { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
   ];
@@ -276,11 +276,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
           {services.map((service, index) => (
             <div key={index} className="text-center cursor-pointer" onClick={() => handleServiceClick(service)}>
               <div className={`w-10 h-10 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2`}>
-                {typeof service.icon === 'function' ? (
-                  <service.icon />
-                ) : (
-                  <service.icon className="w-5 h-5" />
-                )}
+                <service.icon className="w-5 h-5" />
               </div>
               <p className="text-xs font-medium text-gray-700">{service.title}</p>
             </div>
