@@ -19,7 +19,6 @@ import {
   Target, 
   Tv, 
   LogOut, 
-  DollarSign, 
   UserPlus, 
   MoreHorizontal,
   Headphones,
@@ -80,6 +79,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showData, setShowData] = useState(false);
   const [showLoan, setShowLoan] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
+  const [transactions, setTransactions] = useState<any[]>([]);
 
   // Promotional banners
   const promoImages = [
@@ -89,11 +89,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     '/lovable-uploads/dc931c48-9879-4cd8-9e24-e31ba6903d9c.png'
   ];
 
-  // Load balance from localStorage on component mount
+  // Load balance and transactions from localStorage on component mount
   useEffect(() => {
     const savedBalance = localStorage.getItem(`userBalance_${user.email}`);
     if (savedBalance) {
       setBalance(parseFloat(savedBalance));
+    }
+    
+    const savedTransactions = localStorage.getItem(`userTransactions_${user.email}`);
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
     }
   }, [user.email]);
 
@@ -101,6 +106,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   useEffect(() => {
     localStorage.setItem(`userBalance_${user.email}`, balance.toString());
   }, [balance, user.email]);
+
+  // Save transactions to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(`userTransactions_${user.email}`, JSON.stringify(transactions));
+  }, [transactions, user.email]);
 
   // Auto-scroll carousel
   useEffect(() => {
@@ -118,11 +128,51 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     return () => clearInterval(interval);
   }, [api, promoImages.length]);
 
+  // Handle back navigation to prevent app exit
+  useEffect(() => {
+    const handleBackButton = (event: PopStateEvent) => {
+      event.preventDefault();
+      
+      // If on dashboard, allow exit, otherwise return to dashboard
+      if (!showTransactionHistory && !showJoinGroup && !showSupport && !showLiveChat && 
+          !showProfileMenu && !showInviteEarn && !showTVRecharge && !showBetting && 
+          !showAbout && !showProfileInfo && !showAirtime && !showData && !showLoan) {
+        // On dashboard, allow normal back behavior (exit app)
+        return;
+      }
+      
+      // Return to dashboard from any other page
+      setShowTransactionHistory(false);
+      setShowJoinGroup(false);
+      setShowSupport(false);
+      setShowLiveChat(false);
+      setShowProfileMenu(false);
+      setShowInviteEarn(false);
+      setShowTVRecharge(false);
+      setShowBetting(false);
+      setShowAbout(false);
+      setShowProfileInfo(false);
+      setShowAirtime(false);
+      setShowData(false);
+      setShowLoan(false);
+    };
+
+    window.addEventListener('popstate', handleBackButton);
+    return () => window.removeEventListener('popstate', handleBackButton);
+  }, []);
+
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },
     { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600', onClick: () => setShowJoinGroup(true) },
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
   ];
+
+  // Custom Naira icon component
+  const NairaIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M7 4h2v2h3V4h2v2h2v2h-2v4h2v2h-2v2h2v2h-2v2h-2v-2H9v2H7v-2H5v-2h2v-2H5v-2h2V8H5V6h2V4zm2 4v4h3V8H9z"/>
+    </svg>
+  );
 
   const services = [
     { title: 'Airtime', icon: Smartphone, color: 'bg-green-100 text-green-600', onClick: () => setShowAirtime(true) },
@@ -130,7 +180,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
     { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
-    { title: 'Loan', icon: DollarSign, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
+    { title: 'Loan', icon: NairaIcon, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
   ];
@@ -141,6 +191,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   const handleBonusClaimed = (amount: number) => {
     setBalance(prevBalance => prevBalance + amount);
+    
+    // Add transaction record
+    const newTransaction = {
+      id: Date.now(),
+      type: 'credit',
+      amount: amount,
+      description: 'Bonus claimed',
+      date: new Date().toISOString()
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
   };
 
   const handleServiceClick = (service: any) => {
@@ -155,9 +215,13 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     }
   };
 
+  const handleTransactionHistoryClick = () => {
+    setShowTransactionHistory(true);
+  };
+
   // Show full page components
   if (showTransactionHistory) {
-    return <TransactionHistory onBack={() => setShowTransactionHistory(false)} />;
+    return <TransactionHistory onBack={() => setShowTransactionHistory(false)} transactions={transactions} />;
   }
 
   if (showJoinGroup) {
@@ -245,10 +309,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
               <Maximize className="w-6 h-6 text-gray-600" />
             </button>
             <button
-              onClick={() => setShowTransactionHistory(true)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              onClick={handleTransactionHistoryClick}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
             >
               <Bell className="w-6 h-6 text-gray-600" />
+              {transactions.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {transactions.length > 9 ? '9+' : transactions.length}
+                </span>
+              )}
             </button>
           </div>
         </div>

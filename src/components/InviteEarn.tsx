@@ -13,7 +13,7 @@ interface InviteEarnProps {
 
 const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
   const [referralCode] = useState(`FMP${user.name.toUpperCase().slice(0, 3)}${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
-  const [referralLink] = useState(`https://bestnaijaupdatefairmoniepay.vercel.app/join?ref=${referralCode}`);
+  const [referralLink] = useState(`https://fairmoniepayregistration.vercel.app/?ref=${referralCode}`);
   const [totalEarnings] = useState(0);
   const [totalReferrals] = useState(0);
 
@@ -27,14 +27,25 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
   };
 
   const handleShare = () => {
+    const shareText = `Join me on FairMonie Pay and start earning! 
+
+FairMonie - Financial services. Manage your finance, buy airtime, data, TV subscriptions and loan with fairpay.
+
+Sign up using my link: ${referralLink}`;
+
     if (navigator.share) {
       navigator.share({
         title: 'Join FairMonie Pay',
-        text: 'Join me on FairMonie Pay and earn money together!',
+        text: shareText,
         url: referralLink,
       });
     } else {
-      handleCopyLink();
+      navigator.clipboard.writeText(shareText);
+      toast({
+        title: "Message Copied!",
+        description: "Invitation message copied to clipboard",
+        duration: 2000,
+      });
     }
   };
 
@@ -100,13 +111,24 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
           </CardContent>
         </Card>
 
+        {/* App Preview */}
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">What Your Friends Will See</h3>
+            <div className="bg-gray-100 p-4 rounded-lg">
+              <h4 className="font-semibold text-green-600 mb-2">FairMonie Pay</h4>
+              <p className="text-sm text-gray-700">Financial services. Manage your finance, buy airtime, data, TV subscriptions and loan with fairpay</p>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Referral Link */}
         <Card>
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Referral Link</h3>
             <div className="space-y-4">
               <div className="flex space-x-2">
-                <Input value={referralLink} readOnly className="flex-1" />
+                <Input value={referralLink} readOnly className="flex-1 text-xs" />
                 <Button onClick={handleCopyLink} variant="outline" size="icon">
                   <Copy className="w-4 h-4" />
                 </Button>
@@ -114,7 +136,7 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
               <div className="flex space-x-2">
                 <Button onClick={handleShare} className="flex-1 bg-green-600 hover:bg-green-700">
                   <Share className="w-4 h-4 mr-2" />
-                  Share Link
+                  Share Invitation
                 </Button>
               </div>
             </div>

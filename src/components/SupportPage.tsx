@@ -13,12 +13,11 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
   };
 
   const handleEmailSupport = () => {
-    window.open('fairmoniepays@gmail.com', '_blank');
+    window.open('mailto:fairmoniepays@gmail.com', '_blank');
   };
 
   const handleChatBot = () => {
-    // This would typically open a chatbot widget
-    alert('Chat bot feature coming soon!');
+    window.open('https://t.me/fairmonie_earning_bot', '_blank');
   };
 
   return (
@@ -52,7 +51,8 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Telegram Support</h3>
-                <p className="text-sm text-gray-600">Get instant support through our Telegram channel</p>
+                <p className="text-sm text-gray-600">Get instant support through our Telegram bot</p>
+                <p className="text-xs text-green-600 mt-1">@fairmonie_earning_bot</p>
               </div>
             </div>
           </CardContent>
@@ -67,6 +67,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Email Support</h3>
                 <p className="text-sm text-gray-600">Send us an email and we'll get back to you within 24 hours</p>
+                <p className="text-xs text-green-600 mt-1">fairmoniepays@gmail.com</p>
               </div>
             </div>
           </CardContent>
@@ -81,6 +82,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Chat Bot</h3>
                 <p className="text-sm text-gray-600">Get instant answers to common questions</p>
+                <p className="text-xs text-green-600 mt-1">@fairmonie_earning_bot</p>
               </div>
             </div>
           </CardContent>

@@ -1,32 +1,32 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react';
+
+interface Transaction {
+  id: number;
+  type: 'credit' | 'debit';
+  amount: number;
+  description: string;
+  date: string;
+}
 
 interface TransactionHistoryProps {
   onBack: () => void;
+  transactions: Transaction[];
 }
 
-const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onBack }) => {
-  const transactions = [
-    {
-      id: 1,
-      type: 'out',
-      title: 'Transfer to AKANJI KAMORU ADE...',
-      amount: 800.00,
-      date: 'Jun 28th, 12:13:08',
-      status: 'Successful'
-    },
-    {
-      id: 2,
-      type: 'in',
-      title: 'Transfer from BLUE PAY LTD',
-      amount: 200000.00,
-      date: 'Jun 28th, 08:33:04',
-      status: 'Successful'
-    }
-  ];
+const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onBack, transactions }) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,34 +46,42 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onBack }) => {
       <div className="px-4 py-6">
         {transactions.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No transactions made</p>
+            <Clock className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-500 mb-2">No Transaction Yet</h3>
+            <p className="text-gray-400">Your transaction history will appear here</p>
           </div>
         ) : (
           <div className="space-y-3">
             {transactions.map((transaction) => (
-              <Card key={transaction.id} className="bg-white shadow-sm border border-gray-100">
+              <Card key={transaction.id} className="border border-gray-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      transaction.type === 'in' ? 'bg-green-100' : 'bg-red-100'
-                    }`}>
-                      {transaction.type === 'in' ? (
-                        <ArrowDownLeft className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <ArrowUpRight className="w-5 h-5 text-red-600" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900 text-sm">{transaction.title}</p>
-                      <p className="text-xs text-gray-500">{transaction.date}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
+                      }`}>
+                        {transaction.type === 'credit' ? (
+                          <ArrowDownLeft className={`w-5 h-5 ${
+                            transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                          }`} />
+                        ) : (
+                          <ArrowUpRight className={`w-5 h-5 ${
+                            transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                          }`} />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{transaction.description}</h3>
+                        <p className="text-sm text-gray-500">{formatDate(transaction.date)}</p>
+                      </div>
                     </div>
                     <div className="text-right">
                       <p className={`font-semibold ${
-                        transaction.type === 'in' ? 'text-green-600' : 'text-gray-900'
+                        transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
                       }`}>
-                        {transaction.type === 'in' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
+                        {transaction.type === 'credit' ? '+' : '-'}₦{transaction.amount.toLocaleString()}.00
                       </p>
-                      <p className="text-xs text-green-500">{transaction.status}</p>
+                      <p className="text-xs text-gray-500 capitalize">{transaction.type}</p>
                     </div>
                   </div>
                 </CardContent>

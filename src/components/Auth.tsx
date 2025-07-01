@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -53,9 +54,16 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
+    // Check if user exists in localStorage
+    const savedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const user = savedUsers.find((u: any) => u.email === loginData.email && u.password === loginData.password);
+    
     setTimeout(() => {
-      onAuthSuccess({ name: 'Vicky', email: loginData.email });
+      if (user) {
+        onAuthSuccess({ name: user.name, email: loginData.email });
+      } else {
+        alert('Invalid email or password');
+      }
       setIsLoading(false);
     }, 1500);
   };
@@ -69,7 +77,16 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     
     setIsLoading(true);
     
-    // Simulate API call
+    // Save user to localStorage
+    const savedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const newUser = {
+      name: signupData.name,
+      email: signupData.email,
+      password: signupData.password
+    };
+    savedUsers.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(savedUsers));
+    
     setTimeout(() => {
       onAuthSuccess({ name: signupData.name, email: signupData.email });
       setIsLoading(false);
@@ -97,7 +114,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-32 object-cover"
+                        className="w-full h-40 object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -218,7 +235,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-white hover:bg-gray-50 text-green-600 font-medium rounded-full border-2 border-green-600 transition-all duration-200 transform hover:scale-105"
+                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Creating account...' : 'CREATE ACCOUNT'}
