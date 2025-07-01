@@ -352,31 +352,6 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
         </DialogContent>
       </Dialog>
 
-      {/* Success Dialog */}
-      <Dialog open={showSuccess} onOpenChange={() => {}}>
-        <DialogContent className="max-w-sm mx-auto">
-          <div className="text-center py-6 space-y-6">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            </div>
-            
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Payment Confirmed</h2>
-              <p className="text-gray-600">
-                Payment confirmed successful your withdrawal has been approved you will get credited shortly
-              </p>
-            </div>
-
-            <Button 
-              onClick={handleSuccessClose}
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-            >
-              Continue
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* Payment Declined Dialog - Full Screen */}
       <Dialog open={showDeclined} onOpenChange={() => {}}>
         <DialogContent className="max-w-full w-full h-full border-0 bg-gray-100 p-0 m-0 rounded-none">
