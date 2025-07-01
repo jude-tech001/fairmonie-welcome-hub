@@ -389,7 +389,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Declined</h2>
                 <p className="text-gray-600">
-                  We couldn't verify your payment. Please try again or contact support for assistance.
+                  We couldn't verify your payment. Please try again or contact support for assistance immediately.
                 </p>
               </div>
 
