@@ -159,11 +159,11 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
               <div className="bg-green-50 p-4 rounded-lg space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Account Number:</span>
-                  <span className="font-mono font-semibold">1100806996</span>
+                  <span className="font-mono font-semibold">2147550631</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Bank:</span>
-                  <span className="font-semibold">9PSB BANK</span>
+                  <span className="font-semibold">Carbon MFB</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Account Name:</span>
