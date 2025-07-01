@@ -229,10 +229,10 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Account Number</p>
-                  <p className="font-semibold">1100806996</p>
+                  <p className="font-semibold">1040202653</p>
                 </div>
                 <button 
-                  onClick={() => copyToClipboard('1100806996', 'Account number')}
+                  onClick={() => copyToClipboard('1040202653', 'Account number')}
                   className="p-2 hover:bg-gray-200 rounded"
                 >
                   <Copy className="w-4 h-4" />
@@ -242,10 +242,10 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Bank Name</p>
-                  <p className="font-semibold">9PSB BANK</p>
+                  <p className="font-semibold">VDF MFB</p>
                 </div>
                 <button 
-                  onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
+                  onClick={() => copyToClipboard('VDF MFB', 'Bank name')}
                   className="p-2 hover:bg-gray-200 rounded"
                 >
                   <Copy className="w-4 h-4" />
@@ -255,7 +255,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Account Name</p>
-                  <p className="font-semibold">fairpay-jude Samuel</p>
+                  <p className="font-semibold">Jude Samuel-money app</p>
                 </div>
                 <button 
                   onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
@@ -316,8 +316,8 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-orange-600">Avoid using Opay bank for your payment</p>
-                  <p className="text-sm text-gray-600">This can lead to delays is verifying your payment.</p>
+                  <p className="font-semibold text-orange-600">Avoid sending fake payment proofs</p>
+                  <p className="text-sm text-gray-600">This can lead to your account being permanently blocked.</p>
                 </div>
               </div>
 
