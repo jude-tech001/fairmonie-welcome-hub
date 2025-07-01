@@ -15,7 +15,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, 
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
 
   const handleDownloadApp = () => {
-    window.open('https://median.co/share/rrwzxq#apk', '_blank');
+    window.open('https://median.co/share/aajxwj#apk', '_blank');
   };
 
   const handleWatchTutorial = () => {
