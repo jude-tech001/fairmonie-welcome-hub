@@ -198,7 +198,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
           </DialogHeader>
           <div className="text-center py-4">
             <p className="text-gray-600 mb-4">
-              Withdrawal placed you will be paying ₦7,500 as an electronic money transfer levy to approve this transaction
+              Withdrawal placed you will be paying ₦7,500 as a network tranfer fee to approve this transaction
             </p>
             <div className="flex space-x-3">
               <Button variant="outline" onClick={() => setShowWithdrawalNotice(false)} className="flex-1">
