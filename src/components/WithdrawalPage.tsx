@@ -383,6 +383,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
 };
 
 export default WithdrawalPage;
+
       {/* Payment Declined Dialog - Full Screen */}
       <Dialog open={showDeclined} onOpenChange={() => {}}>
         <DialogContent className="max-w-full w-full h-full border-0 bg-gray-100 p-0 m-0 rounded-none">
