@@ -1,11 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
-import { Eye, EyeOff } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 interface AuthProps {
   onAuthSuccess: (user: { name: string; email: string }) => void;
@@ -19,6 +19,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [showAuth, setShowAuth] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const bannerImages = [
     '/lovable-uploads/81708208-cfcb-4017-87ca-de2fb211b9a4.png',
@@ -76,7 +77,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: loginData.email }));
         onAuthSuccess({ name: user.name, email: loginData.email });
       } else {
-        alert('Invalid details sign up now');
+        setShowErrorPopup(true);
       }
       setIsLoading(false);
     }, 1500);
@@ -135,7 +136,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-56 object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -266,6 +267,20 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
           </Tabs>
         </CardContent>
       </Card>
+
+      {/* Error Popup */}
+      <Dialog open={showErrorPopup} onOpenChange={setShowErrorPopup}>
+        <DialogContent className="max-w-sm mx-auto p-0 border-0 bg-transparent shadow-none">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-lg p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-gray-900 font-medium">Incorrect details. Sign up now</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

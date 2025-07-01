@@ -132,36 +132,46 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   // Handle back navigation to prevent app exit
   useEffect(() => {
     const handleBackButton = (event: PopStateEvent) => {
-      event.preventDefault();
+      // Check if we're on any sub-page
+      const isOnSubPage = showTransactionHistory || showJoinGroup || showSupport || 
+                         showLiveChat || showProfileMenu || showInviteEarn || 
+                         showTVRecharge || showBetting || showAbout || showProfileInfo || 
+                         showAirtime || showData || showLoan || showWithdrawal;
       
-      // If on dashboard, allow exit, otherwise return to dashboard
-      if (!showTransactionHistory && !showJoinGroup && !showSupport && !showLiveChat && 
-          !showProfileMenu && !showInviteEarn && !showTVRecharge && !showBetting && 
-          !showAbout && !showProfileInfo && !showAirtime && !showData && !showLoan && !showWithdrawal) {
-        // On dashboard, allow normal back behavior (exit app)
-        return;
+      if (isOnSubPage) {
+        // Prevent default behavior and return to dashboard
+        event.preventDefault();
+        
+        // Return to dashboard from any sub-page
+        setShowTransactionHistory(false);
+        setShowJoinGroup(false);
+        setShowSupport(false);
+        setShowLiveChat(false);
+        setShowProfileMenu(false);
+        setShowInviteEarn(false);
+        setShowTVRecharge(false);
+        setShowBetting(false);
+        setShowAbout(false);
+        setShowProfileInfo(false);
+        setShowAirtime(false);
+        setShowData(false);
+        setShowLoan(false);
+        setShowWithdrawal(false);
+        
+        // Push a new state to prevent further back navigation
+        window.history.pushState(null, '', window.location.href);
       }
-      
-      // Return to dashboard from any other page
-      setShowTransactionHistory(false);
-      setShowJoinGroup(false);
-      setShowSupport(false);
-      setShowLiveChat(false);
-      setShowProfileMenu(false);
-      setShowInviteEarn(false);
-      setShowTVRecharge(false);
-      setShowBetting(false);
-      setShowAbout(false);
-      setShowProfileInfo(false);
-      setShowAirtime(false);
-      setShowData(false);
-      setShowLoan(false);
-      setShowWithdrawal(false);
+      // If on dashboard, allow normal behavior (app can exit)
     };
 
+    // Add initial state to prevent back navigation
+    window.history.pushState(null, '', window.location.href);
     window.addEventListener('popstate', handleBackButton);
+    
     return () => window.removeEventListener('popstate', handleBackButton);
-  }, []);
+  }, [showTransactionHistory, showJoinGroup, showSupport, showLiveChat, 
+      showProfileMenu, showInviteEarn, showTVRecharge, showBetting, 
+      showAbout, showProfileInfo, showAirtime, showData, showLoan, showWithdrawal]);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },

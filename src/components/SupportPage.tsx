@@ -17,7 +17,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
   };
 
   const handleChatBot = () => {
-    window.open('https://t.me/fairmonie_earning_bot', '_blank');
+    window.open('https://t.me/Fairmonie_pay_bot', '_blank');
   };
 
   return (
@@ -82,7 +82,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Chat Bot</h3>
                 <p className="text-sm text-gray-600">Get instant answers to common questions</p>
-                <p className="text-xs text-green-600 mt-1">@fairmonie_earning_bot</p>
+                <p className="text-xs text-green-600 mt-1">@Fairmonie_pay_bot</p>
               </div>
             </div>
           </CardContent>

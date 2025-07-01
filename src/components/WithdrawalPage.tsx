@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowLeft, Copy, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Copy, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { nigerianBanks } from '@/utils/banks';
 import { toast } from '@/hooks/use-toast';
 
@@ -26,7 +26,6 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
   const [showTransferNotice, setShowTransferNotice] = useState(false);
   const [showProcessingPayment, setShowProcessingPayment] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
 
   const handleProceed = () => {
     if (!accountNumber || !selectedBank || !accountName || !amount) {
@@ -55,7 +54,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     }, 5000);
   };
 
-  const handleShowTransferNotice = () => {
+  const handleProceedToPayment = () => {
     setShowPaymentDetails(false);
     setShowTransferNotice(true);
   };
@@ -72,7 +71,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     setTimeout(() => {
       setShowProcessingPayment(false);
       setShowSuccess(true);
-      onWithdraw(7500); // Debit the withdrawal amount
+      onWithdraw(7500);
     }, 10000);
   };
 
@@ -262,10 +261,17 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
 
             <div className="space-y-3">
               <Button 
-                onClick={handleShowTransferNotice}
+                onClick={handleProceedToPayment}
                 className="w-full bg-green-600 hover:bg-green-700 text-white"
               >
-                Continue Payment
+                Proceed
+              </Button>
+              <Button 
+                onClick={handlePaymentConfirm}
+                variant="outline"
+                className="w-full"
+              >
+                I have paid
               </Button>
             </div>
           </div>
@@ -320,7 +326,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               onClick={handleContinuePayment}
               className="w-full bg-green-600 hover:bg-green-700 text-white"
             >
-              Proceed
+              Continue Payment
             </Button>
           </div>
         </DialogContent>
