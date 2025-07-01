@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { 
   Plus, 
   ArrowUpRight, 
@@ -77,6 +79,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showAirtime, setShowAirtime] = useState(false);
   const [showData, setShowData] = useState(false);
   const [showLoan, setShowLoan] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+
+  // Promotional banners
+  const promoImages = [
+    '/lovable-uploads/c3847f2b-9b16-471c-a662-b235c89b29ed.png',
+    '/lovable-uploads/8284cb29-e226-487c-87c0-e873ef609638.png',
+    '/lovable-uploads/a36dbaeb-51af-4e4e-9db3-01c5c465ae04.png',
+    '/lovable-uploads/dc931c48-9879-4cd8-9e24-e31ba6903d9c.png'
+  ];
 
   // Load balance from localStorage on component mount
   useEffect(() => {
@@ -90,6 +101,22 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   useEffect(() => {
     localStorage.setItem(`userBalance_${user.email}`, balance.toString());
   }, [balance, user.email]);
+
+  // Auto-scroll carousel
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      if (api) {
+        const nextIndex = (api.selectedScrollSnap() + 1) % promoImages.length;
+        api.scrollTo(nextIndex);
+      }
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [api, promoImages.length]);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },
@@ -281,6 +308,29 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
               <p className="text-xs font-medium text-gray-700">{service.title}</p>
             </div>
           ))}
+        </div>
+
+        {/* Promotional Banner Carousel */}
+        <div className="w-full">
+          <Carousel className="w-full" setApi={setApi}>
+            <CarouselContent>
+              {promoImages.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-1">
+                    <Card className="border-0 shadow-lg overflow-hidden">
+                      <CardContent className="p-0">
+                        <img 
+                          src={image} 
+                          alt={`FairMoney Promo ${index + 1}`}
+                          className="w-full h-20 object-cover"
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
 

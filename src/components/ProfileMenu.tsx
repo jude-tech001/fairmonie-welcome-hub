@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, User, Info, Download, Play } from 'lucide-react';
+import { ArrowLeft, User, Info, Download, Play, CreditCard } from 'lucide-react';
+import BuyFaircodeModal from '@/components/BuyFaircodeModal';
 
 interface ProfileMenuProps {
   onBack: () => void;
@@ -11,8 +12,10 @@ interface ProfileMenuProps {
 }
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, onAbout }) => {
+  const [showBuyFaircode, setShowBuyFaircode] = useState(false);
+
   const handleDownloadApp = () => {
-    alert('Mobile app download coming soon!');
+    window.open('https://median.co/share/rrwzxq#apk', '_blank');
   };
 
   const handleWatchTutorial = () => {
@@ -23,8 +26,13 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, 
     { title: 'Profile Information', icon: User, onClick: onProfileInfo },
     { title: 'About', icon: Info, onClick: onAbout },
     { title: 'Download App', icon: Download, onClick: handleDownloadApp },
-    { title: 'Watch Tutorial', icon: Play, onClick: handleWatchTutorial }
+    { title: 'Watch Tutorial', icon: Play, onClick: handleWatchTutorial },
+    { title: 'Buy Faircode', icon: CreditCard, onClick: () => setShowBuyFaircode(true) }
   ];
+
+  if (showBuyFaircode) {
+    return <BuyFaircodeModal onBack={() => setShowBuyFaircode(false)} user={user} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

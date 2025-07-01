@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -86,7 +85,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-lg"></div>
       </div>
 
-      {/* Banner Carousel */}
+      {/* Banner Carousel - Increased Height */}
       <div className="w-full max-w-md mb-6 relative z-10">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent>
@@ -98,7 +97,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-24 object-cover"
+                        className="w-full h-32 object-cover"
                       />
                     </CardContent>
                   </Card>
