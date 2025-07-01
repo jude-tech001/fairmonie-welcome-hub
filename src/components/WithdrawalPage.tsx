@@ -69,7 +69,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     
     setTimeout(() => {
       setShowProcessingPayment(false);
-      // Randomly show success or declined
+      // Randomly show declined
       const isSuccess = Math.random() > 0.3; // 70% success rate
       if (isSuccess) {
         setShowSuccess(true);
