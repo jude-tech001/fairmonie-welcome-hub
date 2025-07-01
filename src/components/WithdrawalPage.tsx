@@ -316,8 +316,8 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-orange-600">Avoid sending fake payment proofs</p>
-                  <p className="text-sm text-gray-600">This can lead to your account being permanently blocked.</p>
+                  <p className="font-semibold text-orange-600">Avoid using Opay bank for your payment</p>
+                  <p className="text-sm text-gray-600">This can lead to delays is verifying your payment.</p>
                 </div>
               </div>
 
