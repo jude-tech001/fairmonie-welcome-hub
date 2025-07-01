@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Clock, Bell } from 'lucide-react';
 
 interface Transaction {
   id: number;
@@ -32,14 +32,22 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onBack, transac
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={onBack}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
-          </button>
-          <h1 className="text-xl font-semibold text-gray-900">Transaction History</h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onBack}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <ArrowLeft className="w-6 h-6 text-gray-600" />
+            </button>
+            <h1 className="text-xl font-semibold text-gray-900">Transaction History</h1>
+          </div>
+          <div className="relative">
+            <Bell className="w-6 h-6 text-gray-600" />
+            {transactions.length > 0 && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -61,13 +69,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onBack, transac
                         transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
                       }`}>
                         {transaction.type === 'credit' ? (
-                          <ArrowDownLeft className={`w-5 h-5 ${
-                            transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                          }`} />
+                          <ArrowDownLeft className="w-5 h-5 text-green-600" />
                         ) : (
-                          <ArrowUpRight className={`w-5 h-5 ${
-                            transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                          }`} />
+                          <ArrowUpRight className="w-5 h-5 text-red-600" />
                         )}
                       </div>
                       <div>
