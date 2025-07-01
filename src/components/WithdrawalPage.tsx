@@ -229,10 +229,10 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Account Number</p>
-                  <p className="font-semibold">1040202653</p>
+                  <p className="font-semibold">1100806996</p>
                 </div>
                 <button 
-                  onClick={() => copyToClipboard('1040202653', 'Account number')}
+                  onClick={() => copyToClipboard('1100806996', 'Account number')}
                   className="p-2 hover:bg-gray-200 rounded"
                 >
                   <Copy className="w-4 h-4" />
@@ -242,10 +242,10 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Bank Name</p>
-                  <p className="font-semibold">VDF MFB</p>
+                  <p className="font-semibold">9PSB BANK</p>
                 </div>
                 <button 
-                  onClick={() => copyToClipboard('VDF MFB', 'Bank name')}
+                  onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
                   className="p-2 hover:bg-gray-200 rounded"
                 >
                   <Copy className="w-4 h-4" />
@@ -255,7 +255,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Account Name</p>
-                  <p className="font-semibold">Jude Samuel-money app</p>
+                  <p className="font-semibold">fairpay-jude Samuel</p>
                 </div>
                 <button 
                   onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
