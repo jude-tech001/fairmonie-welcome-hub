@@ -40,12 +40,32 @@ Sign up using my link: ${referralLink}`;
         url: referralLink,
       });
     } else {
-      navigator.clipboard.writeText(shareText);
-      toast({
-        title: "Message Copied!",
-        description: "Invitation message copied to clipboard",
-        duration: 2000,
-      });
+      // Social media sharing URLs
+      const shareUrls = {
+        whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+        telegram: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`,
+        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralLink)}`,
+        instagram: `https://www.instagram.com/`,
+      };
+
+      // Create share options dialog
+      const shareOptions = Object.entries(shareUrls).map(([platform, url]) => 
+        `<a href="${url}" target="_blank" style="display: block; padding: 10px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">${platform.charAt(0).toUpperCase() + platform.slice(1)}</a>`
+      ).join('');
+
+      const shareDialog = window.open('', '_blank', 'width=400,height=600');
+      shareDialog?.document.write(`
+        <html>
+          <head><title>Share on Social Media</title></head>
+          <body style="font-family: Arial, sans-serif; padding: 20px;">
+            <h3>Share on:</h3>
+            ${shareOptions}
+            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;">Close</button>
+          </body>
+        </html>
+      `);
     }
   };
 
@@ -116,7 +136,7 @@ Sign up using my link: ${referralLink}`;
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">What Your Friends Will See</h3>
             <div className="bg-gray-100 p-4 rounded-lg">
-              <h4 className="font-semibold text-green-600 mb-2">FairMonie Pay</h4>
+              <h4 className="font-semibold text-green-600 mb-2">FairMonie</h4>
               <p className="text-sm text-gray-700">Financial services. Manage your finance, buy airtime, data, TV subscriptions and loan with fairpay</p>
             </div>
           </CardContent>
@@ -136,29 +156,9 @@ Sign up using my link: ${referralLink}`;
               <div className="flex space-x-2">
                 <Button onClick={handleShare} className="flex-1 bg-green-600 hover:bg-green-700">
                   <Share className="w-4 h-4 mr-2" />
-                  Share Invitation
+                  Share on Social Media
                 </Button>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Referral Code */}
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Referral Code</h3>
-            <div className="flex space-x-2">
-              <Input value={referralCode} readOnly className="flex-1 font-mono text-center text-lg" />
-              <Button onClick={() => {
-                navigator.clipboard.writeText(referralCode);
-                toast({
-                  title: "Code Copied!",
-                  description: "Referral code copied to clipboard",
-                  duration: 2000,
-                });
-              }} variant="outline" size="icon">
-                <Copy className="w-4 h-4" />
-              </Button>
             </div>
           </CardContent>
         </Card>

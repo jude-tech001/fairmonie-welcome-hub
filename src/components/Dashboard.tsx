@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -49,6 +48,7 @@ import ProfileInfoPage from '@/components/ProfileInfoPage';
 import AirtimePage from '@/components/AirtimePage';
 import DataPage from '@/components/DataPage';
 import LoanPage from '@/components/LoanPage';
+import WithdrawalPage from '@/components/WithdrawalPage';
 
 interface User {
   name: string;
@@ -78,6 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showAirtime, setShowAirtime] = useState(false);
   const [showData, setShowData] = useState(false);
   const [showLoan, setShowLoan] = useState(false);
+  const [showWithdrawal, setShowWithdrawal] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const [transactions, setTransactions] = useState<any[]>([]);
 
@@ -136,7 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
       // If on dashboard, allow exit, otherwise return to dashboard
       if (!showTransactionHistory && !showJoinGroup && !showSupport && !showLiveChat && 
           !showProfileMenu && !showInviteEarn && !showTVRecharge && !showBetting && 
-          !showAbout && !showProfileInfo && !showAirtime && !showData && !showLoan) {
+          !showAbout && !showProfileInfo && !showAirtime && !showData && !showLoan && !showWithdrawal) {
         // On dashboard, allow normal back behavior (exit app)
         return;
       }
@@ -155,6 +156,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
       setShowAirtime(false);
       setShowData(false);
       setShowLoan(false);
+      setShowWithdrawal(false);
     };
 
     window.addEventListener('popstate', handleBackButton);
@@ -164,7 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },
     { title: 'Groups', icon: Building, color: 'bg-green-100 text-green-600', onClick: () => setShowJoinGroup(true) },
-    { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600' }
+    { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600', onClick: () => setShowWithdrawal(true) }
   ];
 
   // Custom Naira icon component
@@ -203,6 +205,20 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     setTransactions(prev => [newTransaction, ...prev]);
   };
 
+  const handleWithdrawal = (amount: number) => {
+    setBalance(prevBalance => prevBalance - amount);
+    
+    // Add transaction record
+    const newTransaction = {
+      id: Date.now(),
+      type: 'debit',
+      amount: amount,
+      description: 'Withdrawal',
+      date: new Date().toISOString()
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
+  };
+
   const handleServiceClick = (service: any) => {
     if (service.onClick) {
       service.onClick();
@@ -222,6 +238,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   // Show full page components
   if (showTransactionHistory) {
     return <TransactionHistory onBack={() => setShowTransactionHistory(false)} transactions={transactions} />;
+  }
+
+  if (showWithdrawal) {
+    return <WithdrawalPage onBack={() => setShowWithdrawal(false)} balance={balance} onWithdraw={handleWithdrawal} />;
   }
 
   if (showJoinGroup) {

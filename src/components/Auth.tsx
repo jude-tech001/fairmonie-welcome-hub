@@ -18,6 +18,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [showAuth, setShowAuth] = useState(false);
 
   const bannerImages = [
     '/lovable-uploads/81708208-cfcb-4017-87ca-de2fb211b9a4.png',
@@ -27,6 +28,17 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     '/lovable-uploads/05876cc6-a87a-48f3-b83e-4d4d8ca1585a.png',
     '/lovable-uploads/56604a59-7124-43a2-b11a-bfa4e41db3be.png'
   ];
+
+  // Check for existing user session on mount
+  useEffect(() => {
+    const savedSession = localStorage.getItem('currentUser');
+    if (savedSession) {
+      const user = JSON.parse(savedSession);
+      onAuthSuccess(user);
+    } else {
+      setShowAuth(true);
+    }
+  }, [onAuthSuccess]);
 
   useEffect(() => {
     if (!api) {
@@ -45,7 +57,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         const nextIndex = (api.selectedScrollSnap() + 1) % bannerImages.length;
         api.scrollTo(nextIndex);
       }
-    }, 3000); // Change slide every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [api, bannerImages.length]);
@@ -60,9 +72,11 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     
     setTimeout(() => {
       if (user) {
+        // Save current session
+        localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: loginData.email }));
         onAuthSuccess({ name: user.name, email: loginData.email });
       } else {
-        alert('Invalid email or password');
+        alert('Invalid details sign up now');
       }
       setIsLoading(false);
     }, 1500);
@@ -87,11 +101,18 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     savedUsers.push(newUser);
     localStorage.setItem('registeredUsers', JSON.stringify(savedUsers));
     
+    // Save current session
+    localStorage.setItem('currentUser', JSON.stringify({ name: signupData.name, email: signupData.email }));
+    
     setTimeout(() => {
       onAuthSuccess({ name: signupData.name, email: signupData.email });
       setIsLoading(false);
     }, 1500);
   };
+
+  if (!showAuth) {
+    return null; // Show nothing while checking for existing session
+  }
 
   return (
     <div className="min-h-screen gradient-green flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -114,7 +135,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-40 object-cover"
+                        className="w-full h-48 object-cover"
                       />
                     </CardContent>
                   </Card>

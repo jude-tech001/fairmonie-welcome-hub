@@ -20,6 +20,7 @@ const Index = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('currentUser');
     setUser(null);
     setShowWelcomeModal(false);
     toast({
