@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +23,11 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const bannerImages = [
+    '/lovable-uploads/118ee324-9173-4a01-b482-2b552172fb0b.png',
+    '/lovable-uploads/7d8d2599-e7d4-4a89-99ed-be70bd2900f7.png',
+    '/lovable-uploads/c5f6a93a-b51e-4e1b-9bdd-99be4139b397.png',
+    '/lovable-uploads/75577f5c-b7be-4047-a4ca-a8ba05df9bab.png',
+    '/lovable-uploads/0e383b6b-27d1-448b-acf2-41ebeac44b9e.png',
     '/lovable-uploads/81708208-cfcb-4017-87ca-de2fb211b9a4.png',
     '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
     '/lovable-uploads/40215c09-c6f9-4d2c-af14-e141b137c0b2.png',
@@ -124,7 +130,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-lg"></div>
       </div>
 
-      {/* Banner Carousel - Increased Height */}
+      {/* Banner Carousel - Reduced Height */}
       <div className="w-full max-w-md mb-6 relative z-10">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent>
@@ -136,7 +142,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                       <img 
                         src={image} 
                         alt={`FairMoney Banner ${index + 1}`}
-                        className="w-full h-56 object-cover"
+                        className="w-full h-40 object-cover"
                       />
                     </CardContent>
                   </Card>
@@ -150,14 +156,14 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
       </div>
 
       <Card className="w-full max-w-md relative z-10 shadow-2xl border-0 bg-white/95 backdrop-blur-sm animate-fadeIn">
-        <CardHeader className="text-center pb-4">
+        <CardHeader className="text-center pb-6">
           <CardTitle className="text-3xl font-bold gradient-green bg-clip-text text-transparent mb-2">
             FairMonie Pay
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
-          <Tabs defaultValue="login" className="space-y-4">
+        <CardContent className="px-6 pb-8">
+          <Tabs defaultValue="login" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2 bg-gray-100">
               <TabsTrigger value="login" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
                 LOGIN
@@ -167,8 +173,8 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="login" className="space-y-4">
-              <form onSubmit={handleLogin} className="space-y-4">
+            <TabsContent value="login" className="space-y-6">
+              <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <Input
                     type="email"
@@ -176,7 +182,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={loginData.email}
                     onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div className="relative">
@@ -186,7 +192,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={loginData.password}
                     onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500 pr-12"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500 pr-12"
                   />
                   <button
                     type="button"
@@ -198,7 +204,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105"
+                  className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Signing in...' : 'LOGIN'}
@@ -206,8 +212,8 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
               </form>
             </TabsContent>
 
-            <TabsContent value="signup" className="space-y-4">
-              <form onSubmit={handleSignup} className="space-y-4">
+            <TabsContent value="signup" className="space-y-6">
+              <form onSubmit={handleSignup} className="space-y-6">
                 <div>
                   <Input
                     type="text"
@@ -215,7 +221,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={signupData.name}
                     onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div>
@@ -225,7 +231,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={signupData.email}
                     onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div className="relative">
@@ -235,7 +241,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={signupData.password}
                     onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500 pr-12"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500 pr-12"
                   />
                   <button
                     type="button"
@@ -252,12 +258,12 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                     value={signupData.confirmPassword}
                     onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
                     required
-                    className="h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="h-14 border-gray-200 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105"
+                  className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-all duration-200 transform hover:scale-105"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Creating account...' : 'CREATE ACCOUNT'}

