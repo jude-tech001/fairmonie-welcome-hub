@@ -414,4 +414,4 @@ export default WithdrawalPage;
   );
 };
 
-export default WithdrawalPage;
+export default DashboardPage;
