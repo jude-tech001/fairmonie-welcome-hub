@@ -17,7 +17,7 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
   };
 
   const handleChatBot = () => {
-    window.open('https://t.me/Fairmonie_pay_bot', '_blank');
+    window.open('https://t.me/fairmoney_earn_telegram_channel', '_blank');
   };
 
   return (
