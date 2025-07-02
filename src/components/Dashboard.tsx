@@ -84,12 +84,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [transactions, setTransactions] = useState<any[]>([]);
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
 
-  // Promotional banners
+  // Promotional banners - Updated with new images
   const promoImages = [
-    '/lovable-uploads/c3847f2b-9b16-471c-a662-b235c89b29ed.png',
-    '/lovable-uploads/8284cb29-e226-487c-87c0-e873ef609638.png',
-    '/lovable-uploads/a36dbaeb-51af-4e4e-9db3-01c5c465ae04.png',
-    '/lovable-uploads/dc931c48-9879-4cd8-9e24-e31ba6903d9c.png'
+    '/lovable-uploads/02ef7951-86d6-41f2-9741-99e91f4e5d95.png',
+    '/lovable-uploads/a55e6b57-2776-41a6-8c33-c2a3a419fbe2.png',
+    '/lovable-uploads/b28d4378-fba2-4204-ad40-3241cfb0f79d.png',
+    '/lovable-uploads/1ff28574-03c0-4097-a1f7-ca4d6fd6ddea.png',
+    '/lovable-uploads/1a0dfae0-5d6c-4c61-9895-7d179a6596ef.png',
+    '/lovable-uploads/1f7c7b19-5489-4cb8-a681-df0a31422bad.png',
+    '/lovable-uploads/af5add22-7daa-42ca-a917-9709af91e502.png'
   ];
 
   // Load balance and transactions from localStorage on component mount
@@ -338,7 +341,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
           <div className="flex items-center space-x-3">
             <button 
               onClick={() => setShowLiveChat(true)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors animate-bounce"
             >
               <Headphones className="w-6 h-6 text-gray-600" />
             </button>
