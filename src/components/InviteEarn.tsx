@@ -131,17 +131,6 @@ Sign up using my link: ${referralLink}`;
           </CardContent>
         </Card>
 
-        {/* App Preview */}
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">What Your Friends Will See</h3>
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h4 className="font-semibold text-green-600 mb-2">FairMonie</h4>
-              <p className="text-sm text-gray-700">Financial services. Manage your finance, buy airtime, data, TV subscriptions and loan with fairpay</p>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Referral Link */}
         <Card>
           <CardContent className="p-6">

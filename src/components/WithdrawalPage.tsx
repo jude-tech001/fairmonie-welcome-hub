@@ -205,72 +205,74 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
         </DialogContent>
       </Dialog>
 
-      {/* Payment Details Dialog - Reduced Size */}
+      {/* Payment Details Dialog - Full Screen */}
       <Dialog open={showPaymentDetails} onOpenChange={() => {}}>
-        <DialogContent className="max-w-sm mx-auto border-0 bg-white p-0 m-0 rounded-lg">
-          <div className="flex flex-col p-4">
-            <div className="text-center py-2 space-y-3 flex-1">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <div className="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
-                  <div className="w-3 h-1 bg-white rounded"></div>
+        <DialogContent className="max-w-full w-full h-full border-0 bg-white p-0 m-0 rounded-none">
+          <div className="flex items-center justify-center h-full p-4">
+            <div className="max-w-sm w-full space-y-6">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center">
+                    <div className="w-4 h-2 bg-white rounded"></div>
+                  </div>
+                </div>
+                
+                <h2 className="text-2xl font-semibold">Make Payment</h2>
+                <p className="text-gray-600">Transfer to the account below</p>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Account Number</p>
+                      <p className="font-semibold">1100806996</p>
+                    </div>
+                    <button 
+                      onClick={() => copyToClipboard('1100806996', 'Account number')}
+                      className="p-2 hover:bg-gray-200 rounded-full"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Bank Name</p>
+                      <p className="font-semibold">9PSB BANK</p>
+                    </div>
+                    <button 
+                      onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
+                      className="p-2 hover:bg-gray-200 rounded-full"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Account Name</p>
+                      <p className="font-semibold">fairpay-jude Samuel</p>
+                    </div>
+                    <button 
+                      onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
+                      className="p-2 hover:bg-gray-200 rounded-full"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-gray-600">Fee</p>
+                  <p className="text-2xl font-bold text-green-600">₦7,500</p>
+                  
+                  <Button 
+                    onClick={handlePaymentConfirm}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full mt-4"
+                  >
+                    I have paid
+                  </Button>
                 </div>
               </div>
-              
-              <h2 className="text-lg font-semibold">Make Payment</h2>
-              <p className="text-gray-600 text-sm">Transfer to the account below</p>
-
-              <div className="space-y-2 text-left">
-                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Account Number</p>
-                    <p className="font-semibold text-sm">1100806996</p>
-                  </div>
-                  <button 
-                    onClick={() => copyToClipboard('1100806996', 'Account number')}
-                    className="p-1 hover:bg-gray-200 rounded"
-                  >
-                    <Copy className="w-3 h-3" />
-                  </button>
-                </div>
-
-                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Bank Name</p>
-                    <p className="font-semibold text-sm">9PSB BANK</p>
-                  </div>
-                  <button 
-                    onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
-                    className="p-1 hover:bg-gray-200 rounded"
-                  >
-                    <Copy className="w-3 h-3" />
-                  </button>
-                </div>
-
-                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Account Name</p>
-                    <p className="font-semibold text-sm">fairpay-jude Samuel</p>
-                  </div>
-                  <button 
-                    onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
-                    className="p-1 hover:bg-gray-200 rounded"
-                  >
-                    <Copy className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="p-2 bg-green-50 border border-green-200 rounded">
-                <p className="text-xs text-gray-600">Fee</p>
-                <p className="text-xl font-bold text-green-600">₦7,500</p>
-              </div>
-
-              <Button 
-                onClick={handlePaymentConfirm}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-full text-sm"
-              >
-                I have paid
-              </Button>
             </div>
           </div>
         </DialogContent>
