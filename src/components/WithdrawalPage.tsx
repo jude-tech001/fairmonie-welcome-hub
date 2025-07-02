@@ -191,7 +191,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
           </DialogHeader>
           <div className="text-center py-4">
             <p className="text-gray-600 mb-4">
-              Withdrawal placed you will be paying ₦7,500 as a network tranfer fee to approve this transaction
+              Withdrawal placed you will be paying ₦7,500 as a network transfer fee to approve this transaction
             </p>
             <div className="flex space-x-3">
               <Button variant="outline" onClick={() => setShowWithdrawalNotice(false)} className="flex-1">
@@ -263,11 +263,11 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
 
                 <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                   <p className="text-sm text-gray-600">Fee</p>
-                  <p className="text-2xl font-bold text-green-600">₦7,500</p>
+                  <p className="text-2xl font-bold text-green-600 mb-4">₦7,500</p>
                   
                   <Button 
                     onClick={handlePaymentConfirm}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full mt-4"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
                   >
                     I have paid
                   </Button>
@@ -312,7 +312,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div>
                   <p className="font-semibold text-orange-600">Avoid using Opay bank for your payment</p>
-                  <p className="text-sm text-gray-600">This can lead to delays is verifying your payment.</p>
+                  <p className="text-sm text-gray-600">This can lead to delays in verifying your payment.</p>
                 </div>
               </div>
 

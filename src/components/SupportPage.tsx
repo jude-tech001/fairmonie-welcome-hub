@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, MessageCircle, Mail, Bot, Send } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Mail, Bot, Send, Headset } from 'lucide-react';
 
 interface SupportPageProps {
   onBack: () => void;
+  onOpenLiveChat?: () => void;
 }
 
-const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
+const SupportPage: React.FC<SupportPageProps> = ({ onBack, onOpenLiveChat }) => {
   const handleTelegramSupport = () => {
     window.open('https://t.me/fairmonie_earning_bot', '_blank');
   };
@@ -18,6 +19,12 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
 
   const handleChatBot = () => {
     window.open('https://t.me/Fairmonie_pay_bot', '_blank');
+  };
+
+  const handleLiveChat = () => {
+    if (onOpenLiveChat) {
+      onOpenLiveChat();
+    }
   };
 
   return (
@@ -42,6 +49,21 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
             Choose your preferred way to get support from our team
           </p>
         </div>
+
+        <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleLiveChat}>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Headset className="w-6 h-6 text-green-600 animate-bounce" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Live Chat Support</h3>
+                <p className="text-sm text-gray-600">Chat with our live agents instantly</p>
+                <p className="text-xs text-green-600 mt-1">Available 24/7</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleTelegramSupport}>
           <CardContent className="p-4">

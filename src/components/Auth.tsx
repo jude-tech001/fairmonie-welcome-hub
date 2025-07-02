@@ -23,14 +23,13 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [error, setError] = useState('');
 
   const bannerImages = [
-    '/lovable-uploads/dc064944-26d6-4991-9ed6-6478a3fcbe72.png', // FairMonie Pay logo as first image
+    '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png', // Banner 7 as first image
     '/lovable-uploads/118ee324-9173-4a01-b482-2b552172fb0b.png',
     '/lovable-uploads/7d8d2599-e7d4-4a89-99ed-be70bd2900f7.png',
     '/lovable-uploads/c5f6a93a-b51e-4e1b-9bdd-99be4139b397.png',
     '/lovable-uploads/75577f5c-b7be-4047-a4ca-a8ba05df9bab.png',
     '/lovable-uploads/0e383b6b-27d1-448b-acf2-41ebeac44b9e.png',
     '/lovable-uploads/81708208-cfcb-4017-87ca-de2fb211b9a4.png',
-    '/lovable-uploads/c25170f2-ebbf-42c0-a8de-4936e530ec52.png',
     '/lovable-uploads/40215c09-c6f9-4d2c-af14-e141b137c0b2.png',
     '/lovable-uploads/f1edd580-b9dd-4b28-b2d8-01c503af340c.png',
     '/lovable-uploads/05876cc6-a87a-48f3-b83e-4d4d8ca1585a.png',
@@ -98,15 +97,35 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     
     setIsLoading(true);
     
+    // Check for referral code in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCode = urlParams.get('ref');
+    
     // Save user to localStorage
     const savedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
     const newUser = {
       name: signupData.name,
       email: signupData.email,
-      password: signupData.password
+      password: signupData.password,
+      referredBy: referralCode
     };
     savedUsers.push(newUser);
     localStorage.setItem('registeredUsers', JSON.stringify(savedUsers));
+    
+    // If user was referred, credit the referrer
+    if (referralCode) {
+      const referrals = JSON.parse(localStorage.getItem('referrals') || '{}');
+      if (!referrals[referralCode]) {
+        referrals[referralCode] = [];
+      }
+      referrals[referralCode].push({
+        name: signupData.name,
+        email: signupData.email,
+        date: new Date().toISOString(),
+        earnings: 6500
+      });
+      localStorage.setItem('referrals', JSON.stringify(referrals));
+    }
     
     // Save current session
     localStorage.setItem('currentUser', JSON.stringify({ name: signupData.name, email: signupData.email }));
