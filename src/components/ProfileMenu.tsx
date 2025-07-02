@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, User, Info, Download, Play, CreditCard } from 'lucide-react';
+import { ArrowLeft, User, Info, Download, Play, CreditCard, LogOut } from 'lucide-react';
 import BuyFaircodeModal from '@/components/BuyFaircodeModal';
 
 interface ProfileMenuProps {
@@ -9,9 +9,10 @@ interface ProfileMenuProps {
   user: { name: string; email: string };
   onProfileInfo: () => void;
   onAbout: () => void;
+  onLogout?: () => void;
 }
 
-const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, onAbout }) => {
+const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, onAbout, onLogout }) => {
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
 
   const handleDownloadApp = () => {
@@ -27,7 +28,8 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, 
     { title: 'About', icon: Info, onClick: onAbout },
     { title: 'Download App', icon: Download, onClick: handleDownloadApp },
     { title: 'Watch Tutorial', icon: Play, onClick: handleWatchTutorial },
-    { title: 'Buy Faircode', icon: CreditCard, onClick: () => setShowBuyFaircode(true) }
+    { title: 'Buy Faircode', icon: CreditCard, onClick: () => setShowBuyFaircode(true) },
+    { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout }
   ];
 
   if (showBuyFaircode) {
@@ -54,8 +56,8 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, 
           <Card key={index} className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={item.onClick}>
             <CardContent className="p-3">
               <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <item.icon className="w-5 h-5 text-green-600" />
+                <div className={`w-10 h-10 ${item.color || 'bg-green-100'} rounded-full flex items-center justify-center`}>
+                  <item.icon className={`w-5 h-5 ${item.color ? 'text-red-600' : 'text-green-600'}`} />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">{item.title}</h3>

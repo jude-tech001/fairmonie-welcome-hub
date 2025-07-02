@@ -17,7 +17,6 @@ import {
   Wifi, 
   Target, 
   Tv, 
-  LogOut, 
   UserPlus, 
   MoreHorizontal,
   Headphones,
@@ -32,7 +31,8 @@ import {
   User,
   Info,
   Download,
-  Play
+  Play,
+  CreditCard
 } from 'lucide-react';
 import AddMoneyModal from '@/components/AddMoneyModal';
 import TransactionHistory from '@/components/TransactionHistory';
@@ -182,7 +182,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   // Custom Naira icon component
   const NairaIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M7 4h2v2h3V4h2v2h2v2h-2v4h2v2h-2v2h2v2h-2v2h-2v-2H9v2H7v-2H5v-2h2v-2H5v-2h2V8H5V6h2V4zm2 4v4h3V8H9z"/>
+      <path d="M7 4h2v2h3V4h2v2h2v2h-2v4h2v2h-2v2h2v2h-2v2h2v-2H9v2H7v-2H5v-2h2v-2H5v-2h2V8H5V6h2V4zm2 4v4h3V8H9z"/>
     </svg>
   );
 
@@ -191,7 +191,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600', onClick: () => setShowData(true) },
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
-    { title: 'Log Out', icon: LogOut, color: 'bg-red-100 text-red-600', onClick: onLogout },
+    { title: 'Buy Faircode', icon: CreditCard, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) },
     { title: 'Loan', icon: NairaIcon, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
@@ -271,6 +271,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
       <ProfileMenu 
         onBack={() => setShowProfileMenu(false)} 
         user={user}
+        onLogout={onLogout}
         onProfileInfo={() => {
           setShowProfileMenu(false);
           setShowProfileInfo(true);
