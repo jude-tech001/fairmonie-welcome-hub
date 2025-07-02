@@ -49,6 +49,7 @@ import AirtimePage from '@/components/AirtimePage';
 import DataPage from '@/components/DataPage';
 import LoanPage from '@/components/LoanPage';
 import WithdrawalPage from '@/components/WithdrawalPage';
+import BuyFaircodeModal from '@/components/BuyFaircodeModal';
 
 interface User {
   name: string;
@@ -81,6 +82,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showWithdrawal, setShowWithdrawal] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [showBuyFaircode, setShowBuyFaircode] = useState(false);
 
   // Promotional banners
   const promoImages = [
@@ -191,7 +193,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'Data', icon: Wifi, color: 'bg-green-100 text-green-600', onClick: () => setShowData(true) },
     { title: 'Betting', icon: Target, color: 'bg-green-100 text-green-600', onClick: () => setShowBetting(true) },
     { title: 'TV', icon: Tv, color: 'bg-green-100 text-green-600', onClick: () => setShowTVRecharge(true) },
-    { title: 'Buy Faircode', icon: CreditCard, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) },
+    { title: 'Buy Faircode', icon: CreditCard, color: 'bg-green-100 text-green-600', onClick: () => setShowBuyFaircode(true) },
     { title: 'Loan', icon: NairaIcon, color: 'bg-green-100 text-green-600', onClick: () => setShowLoan(true) },
     { title: 'Invitation', icon: UserPlus, color: 'bg-green-100 text-green-600', onClick: () => setShowInviteEarn(true) },
     { title: 'More', icon: MoreHorizontal, color: 'bg-green-100 text-green-600', onClick: () => setShowProfileMenu(true) }
@@ -252,6 +254,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   if (showWithdrawal) {
     return <WithdrawalPage onBack={() => setShowWithdrawal(false)} balance={balance} onWithdraw={handleWithdrawal} />;
+  }
+
+  if (showBuyFaircode) {
+    return <BuyFaircodeModal onBack={() => setShowBuyFaircode(false)} user={user} />;
   }
 
   if (showJoinGroup) {

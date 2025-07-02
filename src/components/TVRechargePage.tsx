@@ -12,6 +12,7 @@ interface TVRechargePageProps {
 const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
   const [selectedTV, setSelectedTV] = useState('');
   const [iucNumber, setIucNumber] = useState('');
+  const [amount, setAmount] = useState('');
   const [fairCode, setFairCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -24,7 +25,7 @@ const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!selectedTV || !iucNumber || !fairCode) {
+    if (!selectedTV || !iucNumber || !amount || !fairCode) {
       return;
     }
 
@@ -50,6 +51,7 @@ const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
     setShowSuccess(false);
     setSelectedTV('');
     setIucNumber('');
+    setAmount('');
     setFairCode('');
   };
 
@@ -135,6 +137,19 @@ const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Amount
+                </label>
+                <Input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  className="w-full"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Fair Code
                 </label>
                 <Input
@@ -156,7 +171,7 @@ const TVRechargePage: React.FC<TVRechargePageProps> = ({ onBack }) => {
 
               <Button
                 type="submit"
-                disabled={!selectedTV || !iucNumber || !fairCode || isLoading}
+                disabled={!selectedTV || !iucNumber || !amount || !fairCode || isLoading}
                 className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded-full disabled:opacity-50"
               >
                 {isLoading ? (

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -142,46 +141,57 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
             >
               <ArrowLeft className="w-6 h-6 text-white" />
             </button>
-            <h1 className="text-xl font-semibold text-white">Flutterwave Payment</h1>
+            <h1 className="text-xl font-semibold text-white">Make Payment</h1>
           </div>
         </div>
 
-        <div className="px-4 py-6">
-          <Card className="border-green-200 shadow-lg">
-            <CardHeader className="bg-green-100">
-              <CardTitle className="text-green-800 text-center">Payment Details</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
+        <div className="px-4 py-6 flex items-center justify-center">
+          <Card className="w-full max-w-sm border-green-200 shadow-lg">
+            <CardContent className="p-4 space-y-3">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 mb-4">₦8,200</div>
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div className="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
+                    <div className="w-3 h-1 bg-white rounded"></div>
+                  </div>
+                </div>
+                
+                <h2 className="text-lg font-semibold text-green-800 mb-2">Make Payment</h2>
+                <p className="text-green-600 text-sm mb-4">Transfer to the account below</p>
               </div>
 
-              <div className="bg-green-50 p-4 rounded-lg space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Account Number:</span>
-                  <span className="font-mono font-semibold">1100806996</span>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <div>
+                    <p className="text-xs text-gray-600">Account Number</p>
+                    <p className="font-semibold text-sm">1100806996</p>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Bank:</span>
-                  <span className="font-semibold">9PSB BANK</span>
+
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <div>
+                    <p className="text-xs text-gray-600">Bank</p>
+                    <p className="font-semibold text-sm">9PSB BANK</p>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Account Name:</span>
-                  <span className="font-semibold">fairPay-Jude Samuel</span>
+
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <div>
+                    <p className="text-xs text-gray-600">Account Name</p>
+                    <p className="font-semibold text-sm">fairPay-Jude Samuel</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                <p className="text-yellow-800 text-sm">
-                  Please make the exact payment of ₦8,200 to the account details above.
-                </p>
+              <div className="p-2 bg-green-50 border border-green-200 rounded">
+                <p className="text-xs text-gray-600">Fee</p>
+                <p className="text-xl font-bold text-green-600">₦8,200</p>
               </div>
 
               <Button
                 onClick={handlePaymentConfirm}
-                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg"
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-full text-sm"
               >
-                I have made the payment
+                I have paid
               </Button>
             </CardContent>
           </Card>

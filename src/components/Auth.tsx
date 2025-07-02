@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,10 +8,10 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 interface AuthProps {
-  onAuthSuccess: (user: { name: string; email: string }) => void;
+  onLogin: (user: { name: string; email: string }) => void;
 }
 
-const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
+const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
@@ -21,6 +20,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [current, setCurrent] = useState(0);
   const [showAuth, setShowAuth] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [error, setError] = useState('');
 
   const bannerImages = [
     '/lovable-uploads/118ee324-9173-4a01-b482-2b552172fb0b.png',
@@ -41,11 +41,11 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     const savedSession = localStorage.getItem('currentUser');
     if (savedSession) {
       const user = JSON.parse(savedSession);
-      onAuthSuccess(user);
+      onLogin(user);
     } else {
       setShowAuth(true);
     }
-  }, [onAuthSuccess]);
+  }, [onLogin]);
 
   useEffect(() => {
     if (!api) {
@@ -81,7 +81,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
       if (user) {
         // Save current session
         localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: loginData.email }));
-        onAuthSuccess({ name: user.name, email: loginData.email });
+        onLogin({ name: user.name, email: loginData.email });
       } else {
         setShowErrorPopup(true);
       }
@@ -91,8 +91,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (signupData.password !== signupData.confirmPassword) {
-      alert('Passwords do not match');
+    if (!validateSignup()) {
       return;
     }
     
@@ -112,9 +111,21 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     localStorage.setItem('currentUser', JSON.stringify({ name: signupData.name, email: signupData.email }));
     
     setTimeout(() => {
-      onAuthSuccess({ name: signupData.name, email: signupData.email });
+      onLogin({ name: signupData.name, email: signupData.email });
       setIsLoading(false);
     }, 1500);
+  };
+
+  const validateSignup = () => {
+    if (signupData.password !== signupData.confirmPassword) {
+      setError('Password did not match');
+      return false;
+    }
+    if (signupData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return false;
+    }
+    return true;
   };
 
   if (!showAuth) {
