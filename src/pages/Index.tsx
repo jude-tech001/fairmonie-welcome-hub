@@ -35,7 +35,7 @@ const Index = () => {
   };
 
   if (!user) {
-    return <Auth onAuthSuccess={handleAuthSuccess} />;
+    return <Auth onLogin={handleAuthSuccess} />;
   }
 
   return (
