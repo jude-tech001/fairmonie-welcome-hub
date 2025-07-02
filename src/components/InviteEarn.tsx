@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,47 +9,13 @@ import { toast } from '@/hooks/use-toast';
 interface InviteEarnProps {
   onBack: () => void;
   user: { name: string; email: string };
-  onBalanceUpdate: (amount: number) => void;
 }
 
-const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onBalanceUpdate }) => {
+const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
   const [referralCode] = useState(`FMP${user.name.toUpperCase().slice(0, 3)}${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
   const [referralLink] = useState(`https://fairmoniepayregistration.vercel.app/?ref=${referralCode}`);
-  const [totalEarnings, setTotalEarnings] = useState(0);
-  const [totalReferrals, setTotalReferrals] = useState(0);
-  const [referralsList, setReferralsList] = useState<any[]>([]);
-
-  useEffect(() => {
-    // Load referral data
-    const referrals = JSON.parse(localStorage.getItem('referrals') || '{}');
-    const userReferrals = referrals[referralCode] || [];
-    
-    setReferralsList(userReferrals);
-    setTotalReferrals(userReferrals.length);
-    const earnings = userReferrals.reduce((total: number, ref: any) => total + (ref.earnings || 6500), 0);
-    setTotalEarnings(earnings);
-
-    // Credit user balance for new referrals
-    const creditedReferrals = JSON.parse(localStorage.getItem('creditedReferrals') || '[]');
-    const newReferrals = userReferrals.filter((ref: any) => 
-      !creditedReferrals.some((credited: any) => credited.email === ref.email)
-    );
-
-    if (newReferrals.length > 0) {
-      const newEarnings = newReferrals.length * 6500;
-      onBalanceUpdate(newEarnings);
-      
-      // Mark these referrals as credited
-      const updatedCredited = [...creditedReferrals, ...newReferrals];
-      localStorage.setItem('creditedReferrals', JSON.stringify(updatedCredited));
-      
-      toast({
-        title: "Referral Bonus!",
-        description: `You earned ₦${newEarnings.toLocaleString()} from ${newReferrals.length} new referral${newReferrals.length > 1 ? 's' : ''}!`,
-        duration: 5000,
-      });
-    }
-  }, [referralCode, onBalanceUpdate]);
+  const [totalEarnings] = useState(0);
+  const [totalReferrals] = useState(0);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -138,28 +104,6 @@ Sign up using my link: ${referralLink}`;
           </CardContent>
         </Card>
 
-        {/* Recent Referrals */}
-        {referralsList.length > 0 && (
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Referrals</h3>
-              <div className="space-y-3">
-                {referralsList.slice(0, 5).map((referral, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-gray-900">{referral.name}</p>
-                      <p className="text-sm text-gray-600">{new Date(referral.date).toLocaleDateString()}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-green-600">+₦6,500</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
         {/* How it Works */}
         <Card>
           <CardContent className="p-6">
@@ -181,7 +125,7 @@ Sign up using my link: ${referralLink}`;
                 <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-xs font-bold text-green-600">3</span>
                 </div>
-                <p className="text-sm text-gray-600">You automatically earn ₦6,500 for each successful referral</p>
+                <p className="text-sm text-gray-600">You earn ₦6,500 for each successful referral</p>
               </div>
             </div>
           </CardContent>
