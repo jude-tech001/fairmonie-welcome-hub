@@ -124,12 +124,12 @@ Your earnings are credited automatically. Start inviting now!`;
 💳 Your F-Code: F-CODE10883770Q
 🎯 Use: Required for loan applications and premium services
 📋 How to get your F-Code:
-1. Go to Buy F-Code section
+1. Go to Buy FairCode section
 2. Fill in your details
 3. Complete payment
-4. Your F-Code will be activated instantly
+4. Your Fair-Code will be activated instantly
 
-Your F-Code: F-CODE10883770Q is ready for use!`;
+Your F-Code: will be ready for use!`;
     }
     
     // Transaction history
