@@ -282,11 +282,26 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   }
 
   if (showSupport) {
-    return <SupportPage onBack={() => setShowSupport(false)} onLiveChat={() => setShowLiveChat(true)} />;
+    return (
+      <SupportPage 
+        onBack={() => setShowSupport(false)} 
+        onLiveChat={() => {
+          setShowSupport(false);
+          setShowLiveChat(true);
+        }} 
+      />
+    );
   }
 
   if (showLiveChat) {
-    return <LiveChat onBack={() => setShowLiveChat(false)} user={user} />;
+    return (
+      <LiveChat 
+        onBack={() => setShowLiveChat(false)} 
+        user={user} 
+        balance={balance}
+        transactions={transactions}
+      />
+    );
   }
 
   if (showProfileMenu) {
@@ -377,92 +392,83 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
-        {/* Balance Card */}
-        <Card className="gradient-green text-white border-0 shadow-lg animate-slideUp">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-5 h-5" />
-                <span className="text-sm font-medium">Available Balance</span>
-                <button
-                  onClick={() => setShowBalance(!showBalance)}
-                  className="p-1 hover:bg-white/20 rounded-full transition-colors"
-                >
-                  <Eye className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            
-            <div className="flex flex-col items-center justify-center text-center mb-6">
-              <div className="text-3xl font-bold mb-4">
-                {showBalance ? `₦${balance.toLocaleString()}.00` : '****'}
-              </div>
-              <Button
-                onClick={handleAddMoneyClick}
-                className="bg-white text-green-600 hover:bg-gray-50 rounded-full px-6 py-2 font-medium transition-all duration-200 transform hover:scale-105"
+      {/* Balance Card */}
+      <Card className="gradient-green text-white border-0 shadow-lg animate-slideUp">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <ShieldCheck className="w-5 h-5" />
+              <span className="text-sm font-medium">Available Balance</span>
+              <button
+                onClick={() => setShowBalance(!showBalance)}
+                className="p-1 hover:bg-white/20 rounded-full transition-colors"
               >
-                <Gift className="w-4 h-4 mr-2" />
-                Claim Bonus 🎁
-              </Button>
+                <Eye className="w-4 h-4" />
+              </button>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-4">
-          {quickActions.map((action, index) => (
-            <div key={index} className="text-center cursor-pointer" onClick={() => handleQuickActionClick(action)}>
-              <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center mx-auto mb-3`}>
-                <action.icon className="w-6 h-6" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">{action.title}</p>
+          </div>
+          
+          <div className="flex flex-col items-center justify-center text-center mb-6">
+            <div className="text-3xl font-bold mb-4">
+              {showBalance ? `₦${balance.toLocaleString()}.00` : '****'}
             </div>
-          ))}
-        </div>
+            <Button
+              onClick={handleAddMoneyClick}
+              className="bg-white text-green-600 hover:bg-gray-50 rounded-full px-6 py-2 font-medium transition-all duration-200 transform hover:scale-105"
+            >
+              <Gift className="w-4 h-4 mr-2" />
+              Claim Bonus 🎁
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-4 gap-4">
-          {services.map((service, index) => (
-            <div key={index} className="text-center cursor-pointer" onClick={() => handleServiceClick(service)}>
-              <div className={`w-10 h-10 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2`}>
-                <service.icon className="w-5 h-5" />
-              </div>
-              <p className="text-xs font-medium text-gray-700">{service.title}</p>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-3 gap-4">
+        {quickActions.map((action, index) => (
+          <div key={index} className="text-center cursor-pointer" onClick={() => handleQuickActionClick(action)}>
+            <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center mx-auto mb-3`}>
+              <action.icon className="w-6 h-6" />
             </div>
-          ))}
-        </div>
-
-        {/* Promotional Banner Carousel */}
-        <div className="w-full">
-          <Carousel className="w-full" setApi={setApi}>
-            <CarouselContent>
-              {promoImages.map((image, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-1">
-                    <Card className="border-0 shadow-lg overflow-hidden">
-                      <CardContent className="p-0">
-                        <img 
-                          src={image} 
-                          alt={`FairMoney Promo ${index + 1}`}
-                          className="w-full h-20 object-cover"
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+            <p className="text-sm font-medium text-gray-700">{action.title}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Add Money Modal - Centered */}
-      <AddMoneyModal 
-        isOpen={showAddMoneyModal}
-        onClose={() => setShowAddMoneyModal(false)}
-        onBonusClaimed={handleBonusClaimed}
-      />
+      {/* Services Grid */}
+      <div className="grid grid-cols-4 gap-4">
+        {services.map((service, index) => (
+          <div key={index} className="text-center cursor-pointer" onClick={() => handleServiceClick(service)}>
+            <div className={`w-10 h-10 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2`}>
+              <service.icon className="w-5 h-5" />
+            </div>
+            <p className="text-xs font-medium text-gray-700">{service.title}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Promotional Banner Carousel */}
+      <div className="w-full">
+        <Carousel className="w-full" setApi={setApi}>
+          <CarouselContent>
+            {promoImages.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <Card className="border-0 shadow-lg overflow-hidden">
+                    <CardContent className="p-0">
+                      <img 
+                        src={image} 
+                        alt={`FairMoney Promo ${index + 1}`}
+                        className="w-full h-20 object-cover"
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
     </div>
   );
 };

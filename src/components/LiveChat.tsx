@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +8,8 @@ import { ArrowLeft, Send, Bot } from 'lucide-react';
 interface LiveChatProps {
   onBack: () => void;
   user: { name: string; email: string };
+  balance?: number;
+  transactions?: any[];
 }
 
 interface Message {
@@ -17,31 +19,218 @@ interface Message {
   timestamp: Date;
 }
 
-const LiveChat: React.FC<LiveChatProps> = ({ onBack, user }) => {
+const LiveChat: React.FC<LiveChatProps> = ({ onBack, user, balance = 0, transactions = [] }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: `Hello ${user.name}! I'm your FairMonie Pay assistant. I can help you with balance inquiries, transactions, airtime/data purchases, TV subscriptions, loans, betting, withdrawals, referrals, and any other app features. How can I help you today?`,
+      text: `Hello ${user.name}! 👋 I'm your FairMonie Pay virtual assistant. I can help you with:
+
+💰 Balance & Transactions
+📱 Airtime & Data Purchase  
+📺 TV Subscriptions (DSTV, GOTV, etc.)
+💳 Loans & Faircode Purchase
+🎯 Betting Services
+💸 Withdrawals & Transfers
+👥 Referral Program
+🔧 Account & Technical Support
+
+How can I assist you today?`,
       sender: 'bot',
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
 
-  const botResponses = {
-    balance: "Your current balance is displayed on the dashboard. You can add money by clicking the 'Claim Bonus' button. Your balance updates automatically when you make transactions.",
-    airtime: "To buy airtime, go to the Airtime section from the dashboard. Select your network provider, enter the phone number and amount, then proceed with payment. The airtime will be credited instantly.",
-    data: "For data purchases, navigate to the Data section. Choose your network, select a data plan, enter your phone number, and complete the payment. Data will be activated immediately.",
-    tv: "To recharge your TV subscription, go to the TV section. Select your TV provider (DSTV, GOTV, etc.), enter your smartcard number, choose a package, and pay. Your subscription will be renewed instantly.",
-    loan: "You can apply for a loan from the Loan section. Fill in your bank details, enter the loan amount, and provide your Faircode (F-187377). Loan approval is subject to verification.",
-    betting: "Access betting services through the Betting section. You can fund your betting account and place bets on various sports and games.",
-    withdraw: "To withdraw funds, use the Withdraw option in the quick actions. Enter your bank details and withdrawal amount. Processing time is usually 24-48 hours.",
-    referral: "Earn ₦6,500 for each friend you refer! Go to the Invitation section to get your referral link. Share it with friends, and when they sign up, you'll earn rewards.",
-    faircode: "You can purchase a Faircode for ₦8,200 from the 'More' section. Click 'Buy Faircode', fill in your details, and complete the payment process.",
-    support: "For additional support, you can contact us through Telegram (@fairmonie_earning_bot), email (fairmoniepays@gmail.com), or continue chatting here.",
-    transaction: "You can view all your transactions by clicking the bell icon in the top right. It shows your transaction history including credits, debits, and transfers.",
-    security: "Your account is secured with password protection and all transactions are encrypted. Never share your login details with anyone.",
-    default: "I'm here to help with all FairMonie Pay features! You can ask me about balance, airtime, data, TV subscriptions, loans, betting, withdrawals, referrals, transactions, or any other app features."
+  const generateBotResponse = (userInput: string): string => {
+    const lowerInput = userInput.toLowerCase();
+    
+    // Balance related queries
+    if (lowerInput.includes('balance') || lowerInput.includes('money') || lowerInput.includes('account')) {
+      return `Your current balance is ₦${balance.toLocaleString()}.00. You can:
+• Add money by claiming bonuses
+• Check transaction history (${transactions.length} transactions)
+• Withdraw funds to your bank account
+• Use your balance for airtime, data, TV, betting, and loans`;
+    }
+    
+    // Airtime queries
+    if (lowerInput.includes('airtime') || lowerInput.includes('recharge phone')) {
+      return `To buy airtime:
+1. Go to the Airtime section from dashboard
+2. Select your network (MTN, Airtel, Glo, 9mobile)
+3. Enter phone number and amount
+4. Complete payment from your balance
+Airtime is credited instantly! Minimum: ₦50, Maximum: ₦10,000`;
+    }
+    
+    // Data queries
+    if (lowerInput.includes('data') || lowerInput.includes('internet') || lowerInput.includes('bundle')) {
+      return `For data purchase:
+1. Navigate to Data section
+2. Choose your network provider
+3. Select from available data plans:
+   • Daily plans (100MB - 1GB)
+   • Weekly plans (1GB - 6GB)
+   • Monthly plans (1.5GB - 40GB)
+4. Enter phone number and pay
+Data activates immediately!`;
+    }
+    
+    // TV subscription queries
+    if (lowerInput.includes('tv') || lowerInput.includes('dstv') || lowerInput.includes('gotv') || lowerInput.includes('cable')) {
+      return `TV subscription services:
+📺 Available providers: DSTV, GOTV, StarTimes
+📦 Popular packages:
+   • DSTV Compact (₦9,000/month)
+   • GOTV Max (₦4,850/month)
+   • StarTimes Classic (₦2,600/month)
+
+Steps: Go to TV section → Select provider → Enter smartcard number → Choose package → Pay`;
+    }
+    
+    // Loan queries
+    if (lowerInput.includes('loan') || lowerInput.includes('borrow') || lowerInput.includes('credit')) {
+      return `Quick Loan Service:
+💰 Amount: ₦5,000 - ₦500,000
+⏱️ Duration: 7 days - 12 months
+📋 Requirements:
+   • Valid bank account
+   • Faircode (F-187377)
+   • Phone verification
+
+Apply in Loan section. Approval within 24 hours!`;
+    }
+    
+    // Betting queries
+    if (lowerInput.includes('bet') || lowerInput.includes('sport') || lowerInput.includes('game')) {
+      return `Betting Services:
+🏈 Sports: Football, Basketball, Tennis
+🎰 Games: Virtual games, Casino
+💳 Fund your betting wallet directly
+🏆 Popular bookmakers integrated
+
+Access through Betting section for instant funding!`;
+    }
+    
+    // Withdrawal queries
+    if (lowerInput.includes('withdraw') || lowerInput.includes('transfer') || lowerInput.includes('send money')) {
+      return `Withdrawal Process:
+1. Go to Withdraw in quick actions
+2. Enter bank details (account number, bank name)
+3. Specify amount (minimum ₦100)
+4. Confirm transaction
+
+Processing time: 24-48 hours
+Fee: ₦50 for amounts above ₦1,000`;
+    }
+    
+    // Referral queries
+    if (lowerInput.includes('refer') || lowerInput.includes('invite') || lowerInput.includes('friend') || lowerInput.includes('earn')) {
+      return `Referral Program - Earn ₦6,500 per referral! 🎉
+1. Go to Invitation section
+2. Copy your unique referral link
+3. Share with friends
+4. Earn when they sign up and verify
+
+Your earnings are credited automatically. Start inviting now!`;
+    }
+    
+    // Faircode queries
+    if (lowerInput.includes('faircode') || lowerInput.includes('code') || lowerInput.includes('f-187377')) {
+      return `Faircode Purchase:
+💳 Price: ₦8,200
+🎯 Use: Required for loan applications
+📋 Process:
+1. Go to Buy Faircode
+2. Fill your details
+3. Pay ₦8,200
+4. Receive code: F-187377
+
+Your Faircode will be activated after payment!`;
+    }
+    
+    // Transaction history
+    if (lowerInput.includes('transaction') || lowerInput.includes('history') || lowerInput.includes('statement')) {
+      return `Transaction History:
+📊 Total transactions: ${transactions.length}
+🔔 Access via bell icon on dashboard
+📝 Shows: Credits, debits, airtime, data, withdrawals
+📅 Real-time updates
+
+Recent activity and detailed records available!`;
+    }
+    
+    // Support queries
+    if (lowerInput.includes('support') || lowerInput.includes('help') || lowerInput.includes('contact') || lowerInput.includes('problem')) {
+      return `24/7 Support Channels:
+💬 Live Chat: Here with me!
+📧 Email: fairmoniepays@gmail.com
+📱 Telegram: @fairmonie_earning_bot
+⚡ Response time: Instant to 24 hours
+
+I'm here to help with any issues!`;
+    }
+    
+    // Security queries
+    if (lowerInput.includes('security') || lowerInput.includes('safe') || lowerInput.includes('secure') || lowerInput.includes('password')) {
+      return `Security Features:
+🔐 Password protection
+🛡️ Encrypted transactions
+💾 Secure data storage
+🔒 Never share login details
+
+Your account and funds are protected with bank-level security!`;
+    }
+    
+    // Account/Profile queries
+    if (lowerInput.includes('profile') || lowerInput.includes('account info') || lowerInput.includes('update details')) {
+      return `Account Management:
+👤 View profile info in More section
+✏️ Update personal details
+📧 Email: ${user.email}
+👋 Name: ${user.name}
+
+Access via Profile Menu for full account settings!`;
+    }
+    
+    // General greetings
+    if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
+      return `Hello ${user.name}! 😊 Great to see you here! 
+I'm ready to help with any questions about FairMonie Pay. What would you like to know about today?`;
+    }
+    
+    // Thank you responses
+    if (lowerInput.includes('thank') || lowerInput.includes('thanks')) {
+      return `You're very welcome, ${user.name}! 😊 
+Happy to help anytime. Is there anything else you'd like to know about FairMonie Pay?`;
+    }
+    
+    // Default comprehensive response
+    return `I can help you with all FairMonie Pay features:
+
+💰 **Financial Services:**
+• Balance management & transactions
+• Withdrawals to bank accounts
+
+📱 **Mobile Services:**
+• Airtime for all networks
+• Data bundles & plans
+
+📺 **Entertainment:**
+• DSTV, GOTV, StarTimes subscriptions
+
+💳 **Additional Services:**
+• Quick loans (₦5,000-₦500,000)
+• Betting wallet funding
+• Faircode purchase (₦8,200)
+
+👥 **Earning Opportunities:**
+• Referral program (₦6,500/referral)
+
+🔧 **Support:**
+• 24/7 assistance available
+
+What specific service can I help you with today?`;
   };
 
   const handleSendMessage = () => {
@@ -58,35 +247,8 @@ const LiveChat: React.FC<LiveChatProps> = ({ onBack, user }) => {
 
     // Generate bot response
     setTimeout(() => {
-      let botResponse = botResponses.default;
-      const lowerInput = inputMessage.toLowerCase();
+      const botResponse = generateBotResponse(inputMessage);
       
-      if (lowerInput.includes('balance') || lowerInput.includes('money')) {
-        botResponse = botResponses.balance;
-      } else if (lowerInput.includes('airtime') || lowerInput.includes('recharge')) {
-        botResponse = botResponses.airtime;
-      } else if (lowerInput.includes('data') || lowerInput.includes('internet')) {
-        botResponse = botResponses.data;
-      } else if (lowerInput.includes('tv') || lowerInput.includes('dstv') || lowerInput.includes('gotv')) {
-        botResponse = botResponses.tv;
-      } else if (lowerInput.includes('loan') || lowerInput.includes('borrow')) {
-        botResponse = botResponses.loan;
-      } else if (lowerInput.includes('bet') || lowerInput.includes('sport')) {
-        botResponse = botResponses.betting;
-      } else if (lowerInput.includes('withdraw') || lowerInput.includes('transfer')) {
-        botResponse = botResponses.withdraw;
-      } else if (lowerInput.includes('refer') || lowerInput.includes('invite') || lowerInput.includes('friend')) {
-        botResponse = botResponses.referral;
-      } else if (lowerInput.includes('faircode') || lowerInput.includes('code')) {
-        botResponse = botResponses.faircode;
-      } else if (lowerInput.includes('support') || lowerInput.includes('help') || lowerInput.includes('contact')) {
-        botResponse = botResponses.support;
-      } else if (lowerInput.includes('transaction') || lowerInput.includes('history')) {
-        botResponse = botResponses.transaction;
-      } else if (lowerInput.includes('security') || lowerInput.includes('safe') || lowerInput.includes('secure')) {
-        botResponse = botResponses.security;
-      }
-
       const botMessage: Message = {
         id: messages.length + 2,
         text: botResponse,
@@ -99,6 +261,14 @@ const LiveChat: React.FC<LiveChatProps> = ({ onBack, user }) => {
 
     setInputMessage('');
   };
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    const chatContainer = document.getElementById('chat-messages');
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -115,18 +285,21 @@ const LiveChat: React.FC<LiveChatProps> = ({ onBack, user }) => {
             <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
               <Bot className="w-4 h-4 text-green-600" />
             </div>
-            <h1 className="text-xl font-semibold text-gray-900">Live Chat Support</h1>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">FairMonie Assistant</h1>
+              <p className="text-xs text-green-600">Online • Ready to help</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 px-4 py-6 space-y-4 overflow-y-auto">
+      <div id="chat-messages" className="flex-1 px-4 py-6 space-y-4 overflow-y-auto">
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             <Card className={`max-w-xs ${message.sender === 'user' ? 'bg-green-600 text-white' : 'bg-white'}`}>
               <CardContent className="p-3">
-                <p className="text-sm">{message.text}</p>
+                <p className="text-sm whitespace-pre-line">{message.text}</p>
                 <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-green-100' : 'text-gray-500'}`}>
                   {message.timestamp.toLocaleTimeString()}
                 </p>
