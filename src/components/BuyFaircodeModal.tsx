@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Loader2, CreditCard, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, CreditCard, AlertCircle, Copy } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 interface BuyFaircodeModalProps {
   onBack: () => void;
@@ -14,6 +16,15 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
   const [fullName, setFullName] = useState(user.name || '');
   const [email, setEmail] = useState(user.email || '');
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleCopyAccountNumber = () => {
+    navigator.clipboard.writeText('1100806996');
+    toast({
+      title: "Copied!",
+      description: "Account number copied to clipboard",
+      duration: 2000,
+    });
+  };
 
   const handleProceedToPayment = async () => {
     if (!fullName.trim() || !email.trim()) {
@@ -165,6 +176,12 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
                     <p className="text-xs text-gray-600">Account Number</p>
                     <p className="font-semibold text-sm">1100806996</p>
                   </div>
+                  <button
+                    onClick={handleCopyAccountNumber}
+                    className="p-2 hover:bg-green-100 rounded-full transition-colors"
+                  >
+                    <Copy className="w-4 h-4 text-green-600" />
+                  </button>
                 </div>
 
                 <div className="flex justify-between items-center p-2 bg-green-50 rounded">

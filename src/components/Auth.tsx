@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +24,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [error, setError] = useState('');
 
   const bannerImages = [
-    '/lovable-uploads/dc064944-26d6-4991-9ed6-6478a3fcbe72.png', // FairMonie Pay logo as first image
+    '/lovable-uploads/71c7fb43-72c3-40b3-bf50-df56bcc98e34.png', // New FairMoney logo as first image
     '/lovable-uploads/118ee324-9173-4a01-b482-2b552172fb0b.png',
     '/lovable-uploads/7d8d2599-e7d4-4a89-99ed-be70bd2900f7.png',
     '/lovable-uploads/c5f6a93a-b51e-4e1b-9bdd-99be4139b397.png',

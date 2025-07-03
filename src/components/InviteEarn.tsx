@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,13 +9,57 @@ import { toast } from '@/hooks/use-toast';
 interface InviteEarnProps {
   onBack: () => void;
   user: { name: string; email: string };
+  onUpdateBalance: (amount: number) => void;
 }
 
-const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user }) => {
+const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onUpdateBalance }) => {
   const [referralCode] = useState(`FMP${user.name.toUpperCase().slice(0, 3)}${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
   const [referralLink] = useState(`https://fairmoniepayregistration.vercel.app/?ref=${referralCode}`);
-  const [totalEarnings] = useState(0);
-  const [totalReferrals] = useState(0);
+  const [totalEarnings, setTotalEarnings] = useState(0);
+  const [totalReferrals, setTotalReferrals] = useState(0);
+
+  // Load referral data from localStorage
+  useEffect(() => {
+    const savedReferralData = localStorage.getItem(`referralData_${user.email}`);
+    if (savedReferralData) {
+      const data = JSON.parse(savedReferralData);
+      setTotalReferrals(data.totalReferrals || 0);
+      setTotalEarnings(data.totalEarnings || 0);
+    }
+
+    // Check if there are new referrals to credit
+    const pendingReferrals = localStorage.getItem(`pendingReferrals_${referralCode}`);
+    if (pendingReferrals) {
+      const newReferrals = parseInt(pendingReferrals);
+      const newEarnings = newReferrals * 6500;
+      
+      // Update referral data
+      const updatedReferrals = totalReferrals + newReferrals;
+      const updatedEarnings = totalEarnings + newEarnings;
+      
+      setTotalReferrals(updatedReferrals);
+      setTotalEarnings(updatedEarnings);
+      
+      // Save updated data
+      localStorage.setItem(`referralData_${user.email}`, JSON.stringify({
+        totalReferrals: updatedReferrals,
+        totalEarnings: updatedEarnings
+      }));
+      
+      // Credit the user's balance
+      onUpdateBalance(newEarnings);
+      
+      // Clear pending referrals
+      localStorage.removeItem(`pendingReferrals_${referralCode}`);
+      
+      // Show success message
+      toast({
+        title: "Referral Bonus!",
+        description: `You earned ₦${newEarnings.toLocaleString()} from ${newReferrals} new referral${newReferrals > 1 ? 's' : ''}!`,
+        duration: 5000,
+      });
+    }
+  }, [user.email, referralCode, totalReferrals, totalEarnings, onUpdateBalance]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -125,7 +169,7 @@ Sign up using my link: ${referralLink}`;
                 <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-xs font-bold text-green-600">3</span>
                 </div>
-                <p className="text-sm text-gray-600">You earn ₦6,500 for each successful referral</p>
+                <p className="text-sm text-gray-600">You earn ₦6,500 for each successful referral automatically</p>
               </div>
             </div>
           </CardContent>

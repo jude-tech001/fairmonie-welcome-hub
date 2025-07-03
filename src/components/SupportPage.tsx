@@ -1,23 +1,20 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, MessageCircle, Mail, Bot, Send } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Mail, Send } from 'lucide-react';
 
 interface SupportPageProps {
   onBack: () => void;
+  onLiveChat: () => void;
 }
 
-const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
+const SupportPage: React.FC<SupportPageProps> = ({ onBack, onLiveChat }) => {
   const handleTelegramSupport = () => {
     window.open('https://t.me/fairmonie_earning_bot', '_blank');
   };
 
   const handleEmailSupport = () => {
     window.open('mailto:fairmoniepays@gmail.com', '_blank');
-  };
-
-  const handleChatBot = () => {
-    window.open('https://t.me/fairmoney_earn_telegram_channel', '_blank');
   };
 
   return (
@@ -73,16 +70,16 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack }) => {
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={handleChatBot}>
+        <Card className="border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={onLiveChat}>
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <Bot className="w-6 h-6 text-green-600" />
+                <MessageCircle className="w-6 h-6 text-green-600 animate-bounce" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Chat Bot</h3>
-                <p className="text-sm text-gray-600">Get instant answers to common questions</p>
-                <p className="text-xs text-green-600 mt-1">@Fairmonie_pay_bot</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Live Chat</h3>
+                <p className="text-sm text-gray-600">Chat with our support team in real-time</p>
+                <p className="text-xs text-green-600 mt-1">Available 24/7</p>
               </div>
             </div>
           </CardContent>
