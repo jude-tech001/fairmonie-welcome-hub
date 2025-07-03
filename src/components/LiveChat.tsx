@@ -121,8 +121,8 @@ Your earnings are credited automatically. Start inviting now!`;
     // F-Code queries
     if (lowerInput.includes('f-code') || lowerInput.includes('fcode') || lowerInput.includes('f-code10883770q') || lowerInput.includes('code')) {
       return `F-Code Information:
-💳 Your F-Code: F-CODE10883770Q
-🎯 Use: Required for loan applications and premium services
+💳 Get your faircode below 
+🎯 Use of faircode is Required for premium services
 📋 How to get your F-Code:
 1. Go to Buy FairCode section
 2. Fill in your details
