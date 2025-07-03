@@ -234,6 +234,20 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     setTransactions(prev => [newTransaction, ...prev]);
   };
 
+  const handleUpdateBalance = (amount: number) => {
+    setBalance(prevBalance => prevBalance + amount);
+    
+    // Add transaction record
+    const newTransaction = {
+      id: Date.now(),
+      type: 'credit',
+      amount: amount,
+      description: 'Referral bonus',
+      date: new Date().toISOString()
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
+  };
+
   const handleServiceClick = (service: any) => {
     if (service.onClick) {
       service.onClick();
@@ -268,7 +282,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   }
 
   if (showSupport) {
-    return <SupportPage onBack={() => setShowSupport(false)} />;
+    return <SupportPage onBack={() => setShowSupport(false)} onLiveChat={() => setShowLiveChat(true)} />;
   }
 
   if (showLiveChat) {
@@ -302,7 +316,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   }
 
   if (showInviteEarn) {
-    return <InviteEarn onBack={() => setShowInviteEarn(false)} user={user} />;
+    return <InviteEarn onBack={() => setShowInviteEarn(false)} user={user} onUpdateBalance={handleUpdateBalance} />;
   }
 
   if (showTVRecharge) {
