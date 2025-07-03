@@ -79,7 +79,7 @@ Steps: Go to TV section → Select provider → Enter smartcard number → Choos
    • Valid bank account
    • Phone verification
    • Complete application form
-   • F-CODE (F-CODE10883770Q)
+   • Enter your faircode to approve your loan
 
 Apply in Loan section. Approval within 24 hours!`;
     }
