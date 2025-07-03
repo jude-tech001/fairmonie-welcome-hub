@@ -28,7 +28,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ onBack, user, balance = 0, transact
 💰 Balance & Transactions
 📱 Airtime & Data Purchase  
 📺 TV Subscriptions (DSTV, GOTV, etc.)
-💳 Loans & Faircode Purchase
+💳 Loans & Quick Services
 🎯 Betting Services
 💸 Withdrawals & Transfers
 👥 Referral Program
@@ -95,8 +95,8 @@ Steps: Go to TV section → Select provider → Enter smartcard number → Choos
 ⏱️ Duration: 7 days - 12 months
 📋 Requirements:
    • Valid bank account
-   • Faircode (F-187377)
    • Phone verification
+   • Complete application form
 
 Apply in Loan section. Approval within 24 hours!`;
     }
@@ -135,20 +135,6 @@ Fee: ₦50 for amounts above ₦1,000`;
 Your earnings are credited automatically. Start inviting now!`;
     }
     
-    // Faircode queries
-    if (lowerInput.includes('faircode') || lowerInput.includes('code') || lowerInput.includes('f-187377')) {
-      return `Faircode Purchase:
-💳 Price: ₦8,200
-🎯 Use: Required for loan applications
-📋 Process:
-1. Go to Buy Faircode
-2. Fill your details
-3. Pay ₦8,200
-4. Receive code: F-187377
-
-Your Faircode will be activated after payment!`;
-    }
-    
     // Transaction history
     if (lowerInput.includes('transaction') || lowerInput.includes('history') || lowerInput.includes('statement')) {
       return `Transaction History:
@@ -165,7 +151,7 @@ Recent activity and detailed records available!`;
       return `24/7 Support Channels:
 💬 Live Chat: Here with me!
 📧 Email: fairmoniepays@gmail.com
-📱 Telegram: @fairmonie_earning_bot
+📱 Telegram: @fairmonie_earning_support
 ⚡ Response time: Instant to 24 hours
 
 I'm here to help with any issues!`;
@@ -222,7 +208,6 @@ Happy to help anytime. Is there anything else you'd like to know about FairMonie
 💳 **Additional Services:**
 • Quick loans (₦5,000-₦500,000)
 • Betting wallet funding
-• Faircode purchase (₦8,200)
 
 👥 **Earning Opportunities:**
 • Referral program (₦6,500/referral)
