@@ -10,7 +10,7 @@ interface SupportPageProps {
 
 const SupportPage: React.FC<SupportPageProps> = ({ onBack, onLiveChat }) => {
   const handleTelegramSupport = () => {
-    window.open('https://t.me/fairmonie_earning_bot', '_blank');
+    window.open('https://t.me/fairmonie_earning_support', '_blank');
   };
 
   const handleEmailSupport = () => {
@@ -48,8 +48,8 @@ const SupportPage: React.FC<SupportPageProps> = ({ onBack, onLiveChat }) => {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Telegram Support</h3>
-                <p className="text-sm text-gray-600">Get instant support through our Telegram bot</p>
-                <p className="text-xs text-green-600 mt-1">@fairmonie_earning_bot</p>
+                <p className="text-sm text-gray-600">Get instant support through our Telegram channel</p>
+                <p className="text-xs text-green-600 mt-1">@fairmonie_earning_support</p>
               </div>
             </div>
           </CardContent>
