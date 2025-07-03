@@ -20,25 +20,7 @@ interface Message {
 }
 
 const LiveChat: React.FC<LiveChatProps> = ({ onBack, user, balance = 0, transactions = [] }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: `Hello ${user.name}! 👋 I'm your FairMonie Pay virtual assistant. I can help you with:
-
-💰 Balance & Transactions
-📱 Airtime & Data Purchase  
-📺 TV Subscriptions (DSTV, GOTV, etc.)
-💳 Loans & Quick Services
-🎯 Betting Services
-💸 Withdrawals & Transfers
-👥 Referral Program
-🔧 Account & Technical Support
-
-How can I assist you today?`,
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
 
   const generateBotResponse = (userInput: string): string => {
@@ -97,6 +79,7 @@ Steps: Go to TV section → Select provider → Enter smartcard number → Choos
    • Valid bank account
    • Phone verification
    • Complete application form
+   • F-CODE (F-CODE10883770Q)
 
 Apply in Loan section. Approval within 24 hours!`;
     }
@@ -133,6 +116,20 @@ Fee: ₦50 for amounts above ₦1,000`;
 4. Earn when they sign up and verify
 
 Your earnings are credited automatically. Start inviting now!`;
+    }
+    
+    // F-Code queries
+    if (lowerInput.includes('f-code') || lowerInput.includes('fcode') || lowerInput.includes('f-code10883770q') || lowerInput.includes('code')) {
+      return `F-Code Information:
+💳 Your F-Code: F-CODE10883770Q
+🎯 Use: Required for loan applications and premium services
+📋 How to get your F-Code:
+1. Go to Buy F-Code section
+2. Fill in your details
+3. Complete payment
+4. Your F-Code will be activated instantly
+
+Your F-Code: F-CODE10883770Q is ready for use!`;
     }
     
     // Transaction history
@@ -181,13 +178,13 @@ Access via Profile Menu for full account settings!`;
     
     // General greetings
     if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
-      return `Hello ${user.name}! 😊 Great to see you here! 
+      return `Hello! 😊 Great to see you here! 
 I'm ready to help with any questions about FairMonie Pay. What would you like to know about today?`;
     }
     
     // Thank you responses
     if (lowerInput.includes('thank') || lowerInput.includes('thanks')) {
-      return `You're very welcome, ${user.name}! 😊 
+      return `You're very welcome! 😊 
 Happy to help anytime. Is there anything else you'd like to know about FairMonie Pay?`;
     }
     
@@ -208,6 +205,7 @@ Happy to help anytime. Is there anything else you'd like to know about FairMonie
 💳 **Additional Services:**
 • Quick loans (₦5,000-₦500,000)
 • Betting wallet funding
+• F-Code services (F-CODE10883770Q)
 
 👥 **Earning Opportunities:**
 • Referral program (₦6,500/referral)
