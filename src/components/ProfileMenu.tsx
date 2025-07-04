@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, User, Info, Download, Play, CreditCard, LogOut } from 'lucide-react';
 import BuyFaircodeModal from '@/components/BuyFaircodeModal';
+import YouTubeWatchPage from '@/components/YouTubeWatchPage';
 
 interface ProfileMenuProps {
   onBack: () => void;
@@ -14,13 +15,14 @@ interface ProfileMenuProps {
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, onAbout, onLogout }) => {
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
+  const [showYouTubeWatch, setShowYouTubeWatch] = useState(false);
 
   const handleDownloadApp = () => {
     window.open('https://median.co/share/aajxwj#apk', '_blank');
   };
 
   const handleWatchTutorial = () => {
-    alert('Tutorial videos coming soon!');
+    setShowYouTubeWatch(true);
   };
 
   const menuItems = [
@@ -34,6 +36,10 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onBack, user, onProfileInfo, 
 
   if (showBuyFaircode) {
     return <BuyFaircodeModal onBack={() => setShowBuyFaircode(false)} user={user} />;
+  }
+
+  if (showYouTubeWatch) {
+    return <YouTubeWatchPage onBack={() => setShowYouTubeWatch(false)} />;
   }
 
   return (
