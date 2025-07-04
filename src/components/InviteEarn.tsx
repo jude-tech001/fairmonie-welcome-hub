@@ -58,6 +58,9 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onUpdateBalance }
         duration: 5000,
       });
     }
+
+    // Store referral code for this user to track when someone signs up
+    localStorage.setItem(`userReferralCode_${user.email}`, referralCode);
   }, [user.email, referralCode, totalReferrals, totalEarnings, onUpdateBalance]);
 
   const handleCopyLink = () => {
@@ -71,41 +74,8 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onUpdateBalance }
 
   const handleShare = () => {
     const shareText = `Join fairmonie Pay and get ₦250,000 welcome bonus instantly! I'm already earning with Fairmonie pay. Sign up using my link: ${referralLink}`;
-
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join FairMonie Pay',
-        text: shareText,
-        url: referralLink,
-      });
-    } else {
-      // Social media sharing URLs
-      const shareUrls = {
-        whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
-        telegram: `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`,
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`,
-        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,
-        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralLink)}`,
-        instagram: `https://www.instagram.com/`,
-      };
-
-      // Create share options dialog
-      const shareOptions = Object.entries(shareUrls).map(([platform, url]) => 
-        `<a href="${url}" target="_blank" style="display: block; padding: 10px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">${platform.charAt(0).toUpperCase() + platform.slice(1)}</a>`
-      ).join('');
-
-      const shareDialog = window.open('', '_blank', 'width=400,height=600');
-      shareDialog?.document.write(`
-        <html>
-          <head><title>Share on Social Media</title></head>
-          <body style="font-family: Arial, sans-serif; padding: 20px;">
-            <h3>Share on:</h3>
-            ${shareOptions}
-            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;">Close</button>
-          </body>
-        </html>
-      `);
-    }
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -184,7 +154,7 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onUpdateBalance }
               <div className="flex space-x-2">
                 <Button onClick={handleShare} className="flex-1 bg-green-600 hover:bg-green-700">
                   <Share className="w-4 h-4 mr-2" />
-                  Share on Social Media
+                  Share on WhatsApp
                 </Button>
               </div>
             </div>

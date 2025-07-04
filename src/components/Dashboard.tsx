@@ -110,9 +110,46 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
       setTransactions(JSON.parse(savedTransactions));
     }
 
-    // Don't show WhatsApp invite modal on initial dashboard load
-    // Only show when returning from sub-pages
+    // Check for pending referral bonuses
+    checkForReferralBonuses();
   }, [user.email]);
+
+  // Function to check and credit referral bonuses
+  const checkForReferralBonuses = () => {
+    const userReferralCode = localStorage.getItem(`userReferralCode_${user.email}`);
+    if (!userReferralCode) return;
+
+    const pendingKey = `pendingReferrals_${userReferralCode}`;
+    const pendingReferrals = localStorage.getItem(pendingKey);
+    
+    if (pendingReferrals) {
+      const newReferrals = parseInt(pendingReferrals);
+      const bonusAmount = newReferrals * 6500;
+      
+      // Credit the balance
+      setBalance(prevBalance => prevBalance + bonusAmount);
+      
+      // Add transaction record
+      const newTransaction = {
+        id: Date.now(),
+        type: 'credit',
+        amount: bonusAmount,
+        description: `Referral bonus (${newReferrals} referral${newReferrals > 1 ? 's' : ''})`,
+        date: new Date().toISOString()
+      };
+      setTransactions(prev => [newTransaction, ...prev]);
+      
+      // Update referral data
+      const savedReferralData = localStorage.getItem(`referralData_${user.email}`);
+      const referralData = savedReferralData ? JSON.parse(savedReferralData) : { totalReferrals: 0, totalEarnings: 0 };
+      referralData.totalReferrals += newReferrals;
+      referralData.totalEarnings += bonusAmount;
+      localStorage.setItem(`referralData_${user.email}`, JSON.stringify(referralData));
+      
+      // Clear pending referrals
+      localStorage.removeItem(pendingKey);
+    }
+  };
 
   // Save balance to localStorage whenever it changes
   useEffect(() => {
@@ -143,17 +180,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   // Handle back navigation to prevent app exit
   useEffect(() => {
     const handleBackButton = (event: PopStateEvent) => {
-      // Check if we're on any sub-page
       const isOnSubPage = showTransactionHistory || showJoinGroup || showSupport || 
                          showLiveChat || showProfileMenu || showInviteEarn || 
                          showTVRecharge || showBetting || showAbout || showProfileInfo || 
                          showAirtime || showData || showLoan || showWithdrawal;
       
       if (isOnSubPage) {
-        // Prevent default behavior and return to dashboard
         event.preventDefault();
         
-        // Return to dashboard from any sub-page
         setShowTransactionHistory(false);
         setShowJoinGroup(false);
         setShowSupport(false);
@@ -169,21 +203,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         setShowLoan(false);
         setShowWithdrawal(false);
         
-        // Mark that user has returned from a sub-page
         setHasReturnedFromSubPage(true);
-        
-        // Push a new state to prevent further back navigation
         window.history.pushState(null, '', window.location.href);
 
-        // Show WhatsApp invite modal after returning to dashboard
         setTimeout(() => {
           setShowWhatsAppInvite(true);
         }, 1000);
       }
-      // If on dashboard, allow normal behavior (app can exit)
     };
 
-    // Add initial state to prevent back navigation
     window.history.pushState(null, '', window.location.href);
     window.addEventListener('popstate', handleBackButton);
     
@@ -197,7 +225,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     if (hasReturnedFromSubPage) {
       const timer = setTimeout(() => {
         setShowWhatsAppInvite(true);
-        setHasReturnedFromSubPage(false); // Reset the flag
+        setHasReturnedFromSubPage(false);
       }, 1000);
 
       return () => clearTimeout(timer);
@@ -210,7 +238,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     { title: 'Withdraw', icon: TrendingUp, color: 'bg-green-100 text-green-600', onClick: () => setShowWithdrawal(true) }
   ];
 
-  // Custom Naira icon component
   const NairaIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
       <path d="M7 4h2v2h3V4h2v2h2v2h-2v4h2v2h-2v2h2v2h-2v2h2v-2H9v2H7v-2H5v-2h2v-2H5v-2h2V8H5V6h2V4zm2 4v4h3V8H9z"/>
@@ -235,7 +262,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const handleBonusClaimed = (amount: number) => {
     setBalance(prevBalance => prevBalance + amount);
     
-    // Add transaction record
     const newTransaction = {
       id: Date.now(),
       type: 'credit',
@@ -249,7 +275,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const handleWithdrawal = (amount: number) => {
     setBalance(prevBalance => prevBalance - amount);
     
-    // Add transaction record
     const newTransaction = {
       id: Date.now(),
       type: 'debit',
@@ -263,7 +288,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const handleUpdateBalance = (amount: number) => {
     setBalance(prevBalance => prevBalance + amount);
     
-    // Add transaction record
     const newTransaction = {
       id: Date.now(),
       type: 'credit',
@@ -290,7 +314,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     setShowTransactionHistory(true);
   };
 
-  // Show full page components
   if (showTransactionHistory) {
     return <TransactionHistory onBack={() => setShowTransactionHistory(false)} transactions={transactions} />;
   }

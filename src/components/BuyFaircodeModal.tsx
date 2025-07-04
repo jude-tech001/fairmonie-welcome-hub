@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Loader2, CreditCard, AlertCircle, Copy } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ArrowLeft, Loader2, CreditCard, AlertCircle, Copy, CheckCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface BuyFaircodeModalProps {
@@ -12,10 +12,11 @@ interface BuyFaircodeModalProps {
 }
 
 const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => {
-  const [step, setStep] = useState<'form' | 'loading' | 'payment' | 'confirm' | 'declined'>('form');
+  const [step, setStep] = useState<'form' | 'loading' | 'payment' | 'transferNotice' | 'confirm' | 'declined'>('form');
   const [fullName, setFullName] = useState(user.name || '');
   const [email, setEmail] = useState(user.email || '');
   const [isLoading, setIsLoading] = useState(false);
+  const [showTransferNotice, setShowTransferNotice] = useState(false);
 
   const handleCopyAccountNumber = () => {
     navigator.clipboard.writeText('1100806996');
@@ -39,7 +40,15 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
     setTimeout(() => {
       setIsLoading(false);
       setStep('payment');
+      // Auto show transfer notice after showing payment details
+      setTimeout(() => {
+        setShowTransferNotice(true);
+      }, 500);
     }, 7000);
+  };
+
+  const handleContinuePayment = () => {
+    setShowTransferNotice(false);
   };
 
   const handlePaymentConfirm = () => {
@@ -142,78 +151,134 @@ const BuyFaircodeModal: React.FC<BuyFaircodeModalProps> = ({ onBack, user }) => 
 
   if (step === 'payment') {
     return (
-      <div className="min-h-screen bg-green-50">
-        {/* Header */}
-        <div className="bg-green-600 px-4 py-4 shadow-sm">
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setStep('form')}
-              className="p-2 hover:bg-green-700 rounded-full transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6 text-white" />
-            </button>
-            <h1 className="text-xl font-semibold text-white">Make Payment</h1>
+      <>
+        <div className="min-h-screen bg-green-50">
+          {/* Header */}
+          <div className="bg-green-600 px-4 py-4 shadow-sm">
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setStep('form')}
+                className="p-2 hover:bg-green-700 rounded-full transition-colors"
+              >
+                <ArrowLeft className="w-6 h-6 text-white" />
+              </button>
+              <h1 className="text-xl font-semibold text-white">Make Payment</h1>
+            </div>
+          </div>
+
+          <div className="px-4 py-6 flex items-center justify-center">
+            <Card className="w-full max-w-sm border-green-200 shadow-lg">
+              <CardContent className="p-4 space-y-3">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <div className="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
+                      <div className="w-3 h-1 bg-white rounded"></div>
+                    </div>
+                  </div>
+                  
+                  <h2 className="text-lg font-semibold text-green-800 mb-2">Make Payment</h2>
+                  <p className="text-green-600 text-sm mb-4">Transfer to the account below</p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                    <div>
+                      <p className="text-xs text-gray-600">Account Number</p>
+                      <p className="font-semibold text-sm">1100806996</p>
+                    </div>
+                    <button
+                      onClick={handleCopyAccountNumber}
+                      className="p-2 hover:bg-green-100 rounded-full transition-colors"
+                    >
+                      <Copy className="w-4 h-4 text-green-600" />
+                    </button>
+                  </div>
+
+                  <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                    <div>
+                      <p className="text-xs text-gray-600">Bank</p>
+                      <p className="font-semibold text-sm">9PSB BANK</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                    <div>
+                      <p className="text-xs text-gray-600">Account Name</p>
+                      <p className="font-semibold text-sm">fairPay-Jude Samuel</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-2 bg-green-50 border border-green-200 rounded">
+                  <p className="text-xs text-gray-600">Fee</p>
+                  <p className="text-xl font-bold text-green-600">₦8,200</p>
+                </div>
+
+                <Button
+                  onClick={handlePaymentConfirm}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-full text-sm"
+                >
+                  I have paid
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
-        <div className="px-4 py-6 flex items-center justify-center">
-          <Card className="w-full max-w-sm border-green-200 shadow-lg">
-            <CardContent className="p-4 space-y-3">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <div className="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
-                    <div className="w-3 h-1 bg-white rounded"></div>
-                  </div>
-                </div>
-                
-                <h2 className="text-lg font-semibold text-green-800 mb-2">Make Payment</h2>
-                <p className="text-green-600 text-sm mb-4">Transfer to the account below</p>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Account Number</p>
-                    <p className="font-semibold text-sm">1100806996</p>
-                  </div>
-                  <button
-                    onClick={handleCopyAccountNumber}
-                    className="p-2 hover:bg-green-100 rounded-full transition-colors"
-                  >
-                    <Copy className="w-4 h-4 text-green-600" />
-                  </button>
-                </div>
-
-                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Bank</p>
-                    <p className="font-semibold text-sm">9PSB BANK</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
-                  <div>
-                    <p className="text-xs text-gray-600">Account Name</p>
-                    <p className="font-semibold text-sm">fairPay-Jude Samuel</p>
-                  </div>
+        {/* Transfer Notice Dialog */}
+        <Dialog open={showTransferNotice} onOpenChange={() => {}}>
+          <DialogContent className="max-w-sm mx-auto">
+            <div className="text-center py-4 space-y-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-full"></div>
                 </div>
               </div>
+              
+              <h2 className="text-xl font-semibold">Pay NGN ₦8,200.00</h2>
+              <p className="text-gray-600">Before you make this transfer</p>
 
-              <div className="p-2 bg-green-50 border border-green-200 rounded">
-                <p className="text-xs text-gray-600">Fee</p>
-                <p className="text-xl font-bold text-green-600">₦8,200</p>
+              <div className="space-y-3 text-left">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-orange-600">Transfer only the exact amount</p>
+                    <p className="text-sm text-gray-600">Do not transfer an incorrect amount.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-orange-600">Do not dispute any transactions to our account</p>
+                    <p className="text-sm text-gray-600">It can cause restrictions and other impacts.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-orange-600">Avoid using Opay bank for your payment</p>
+                    <p className="text-sm text-gray-600">This can lead to delays is verifying your payment.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded">
+                  <input type="checkbox" className="mt-1" defaultChecked />
+                  <p className="text-sm">I understand these instructions.</p>
+                </div>
               </div>
 
-              <Button
-                onClick={handlePaymentConfirm}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-full text-sm"
+              <Button 
+                onClick={handleContinuePayment}
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
               >
-                I have paid
+                Continue Payment
               </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
