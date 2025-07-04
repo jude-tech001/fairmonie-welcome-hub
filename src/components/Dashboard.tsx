@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -51,6 +50,7 @@ import DataPage from '@/components/DataPage';
 import LoanPage from '@/components/LoanPage';
 import WithdrawalPage from '@/components/WithdrawalPage';
 import BuyFaircodeModal from '@/components/BuyFaircodeModal';
+import WhatsAppInviteModal from '@/components/WhatsAppInviteModal';
 
 interface User {
   name: string;
@@ -84,6 +84,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [api, setApi] = useState<CarouselApi>();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
+  const [showWhatsAppInvite, setShowWhatsAppInvite] = useState(false);
 
   // Promotional banners - Updated with new images
   const promoImages = [
@@ -107,6 +108,13 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
     if (savedTransactions) {
       setTransactions(JSON.parse(savedTransactions));
     }
+
+    // Show WhatsApp invite modal after 1 second when user reaches dashboard
+    const timer = setTimeout(() => {
+      setShowWhatsAppInvite(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [user.email]);
 
   // Save balance to localStorage whenever it changes
@@ -166,6 +174,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         
         // Push a new state to prevent further back navigation
         window.history.pushState(null, '', window.location.href);
+
+        // Show WhatsApp invite modal after returning to dashboard
+        setTimeout(() => {
+          setShowWhatsAppInvite(true);
+        }, 1000);
       }
       // If on dashboard, allow normal behavior (app can exit)
     };
@@ -478,6 +491,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         isOpen={showAddMoneyModal} 
         onClose={() => setShowAddMoneyModal(false)}
         onBonusClaimed={handleBonusClaimed}
+      />
+
+      <WhatsAppInviteModal
+        isOpen={showWhatsAppInvite}
+        onClose={() => setShowWhatsAppInvite(false)}
+        user={user}
       />
     </div>
   );
