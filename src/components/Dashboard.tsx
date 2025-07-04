@@ -85,6 +85,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [transactions, setTransactions] = useState<any[]>([]);
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
   const [showWhatsAppInvite, setShowWhatsAppInvite] = useState(false);
+  const [hasReturnedFromSubPage, setHasReturnedFromSubPage] = useState(false);
 
   // Promotional banners - Updated with new images
   const promoImages = [
@@ -109,12 +110,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
       setTransactions(JSON.parse(savedTransactions));
     }
 
-    // Show WhatsApp invite modal after 1 second when user reaches dashboard
-    const timer = setTimeout(() => {
-      setShowWhatsAppInvite(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    // Don't show WhatsApp invite modal on initial dashboard load
+    // Only show when returning from sub-pages
   }, [user.email]);
 
   // Save balance to localStorage whenever it changes
@@ -172,6 +169,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         setShowLoan(false);
         setShowWithdrawal(false);
         
+        // Mark that user has returned from a sub-page
+        setHasReturnedFromSubPage(true);
+        
         // Push a new state to prevent further back navigation
         window.history.pushState(null, '', window.location.href);
 
@@ -191,6 +191,18 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   }, [showTransactionHistory, showJoinGroup, showSupport, showLiveChat, 
       showProfileMenu, showInviteEarn, showTVRecharge, showBetting, 
       showAbout, showProfileInfo, showAirtime, showData, showLoan, showWithdrawal]);
+
+  // Show WhatsApp invite modal when returning from other pages
+  useEffect(() => {
+    if (hasReturnedFromSubPage) {
+      const timer = setTimeout(() => {
+        setShowWhatsAppInvite(true);
+        setHasReturnedFromSubPage(false); // Reset the flag
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [hasReturnedFromSubPage]);
 
   const quickActions = [
     { title: 'Support', icon: Users, color: 'bg-green-100 text-green-600', onClick: () => setShowSupport(true) },

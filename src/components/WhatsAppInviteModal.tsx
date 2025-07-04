@@ -23,47 +23,47 @@ const WhatsAppInviteModal: React.FC<WhatsAppInviteModalProps> = ({ isOpen, onClo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm mx-auto p-0 bg-white rounded-3xl overflow-hidden border-0 shadow-2xl">
-        {/* Header with close button */}
-        <div className="relative bg-gradient-to-r from-purple-600 to-purple-700 p-6 text-white">
+      <DialogContent className="max-w-sm mx-auto p-0 bg-white rounded-3xl overflow-hidden border-0 shadow-2xl max-h-[480px]">
+        {/* Header with close button - Green design */}
+        <div className="relative gradient-green p-4 text-white">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1 hover:bg-white/20 rounded-full transition-colors"
+            className="absolute top-3 right-3 p-1 hover:bg-white/20 rounded-full transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
-          <div className="flex items-center space-x-2 mb-2">
-            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
-              <Gift className="w-4 h-4" />
+          <div className="flex items-center space-x-2 mb-1">
+            <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
+              <Gift className="w-3 h-3" />
             </div>
             <span className="text-sm font-medium">Refer & Earn</span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6 text-center">
+        <div className="p-5 text-center">
           {/* Gift Icon */}
-          <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Gift className="w-8 h-8 text-yellow-600" />
+          <div className="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <Gift className="w-7 h-7 text-yellow-600" />
           </div>
 
           {/* Title */}
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Earn ₦6,500!</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-2">Earn ₦6,500!</h2>
 
           {/* Description */}
           <div className="text-sm text-gray-600 mb-4 space-y-1">
             <p>Invite your friends using your referral link.</p>
             <p>Earn ₦6,500 for each successful signup.</p>
-            <p>Get a discount on your PAY ID purchase.</p>
+            <p>Get a discount on your Faircode purchase.</p>
           </div>
 
           {/* WhatsApp Share Button */}
           <Button
             onClick={handleWhatsAppShare}
-            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-full font-medium text-base mb-4 transition-all duration-200 transform hover:scale-105"
+            className="w-full bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-full font-medium text-sm mb-3 transition-all duration-200 transform hover:scale-105"
           >
             <svg 
-              className="w-5 h-5 mr-2" 
+              className="w-4 h-4 mr-2" 
               fill="currentColor" 
               viewBox="0 0 24 24"
             >
@@ -74,7 +74,7 @@ const WhatsAppInviteModal: React.FC<WhatsAppInviteModalProps> = ({ isOpen, onClo
 
           {/* Bottom text */}
           <p className="text-xs text-gray-500">
-            Start earning and save on PAY ID costs today!
+            Start earning and save on Faircode costs today!
           </p>
         </div>
       </DialogContent>
