@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -71,11 +70,7 @@ const InviteEarn: React.FC<InviteEarnProps> = ({ onBack, user, onUpdateBalance }
   };
 
   const handleShare = () => {
-    const shareText = `Join me on FairMonie Pay and start earning! 
-
-FairMonie - Financial services. Manage your finance, buy airtime, data, TV subscriptions and loan with fairpay.
-
-Sign up using my link: ${referralLink}`;
+    const shareText = `Join fairmonie Pay and get ₦250,000 welcome bonus instantly! I'm already earning with Fairmonie pay. Sign up using my link: ${referralLink}`;
 
     if (navigator.share) {
       navigator.share({
