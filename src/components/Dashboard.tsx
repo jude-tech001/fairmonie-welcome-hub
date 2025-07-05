@@ -51,6 +51,7 @@ import LoanPage from '@/components/LoanPage';
 import WithdrawalPage from '@/components/WithdrawalPage';
 import BuyFaircodeModal from '@/components/BuyFaircodeModal';
 import WhatsAppInviteModal from '@/components/WhatsAppInviteModal';
+import WithdrawalNotifications from '@/components/WithdrawalNotifications';
 
 interface User {
   name: string;
@@ -405,6 +406,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Withdrawal Notifications */}
+      <WithdrawalNotifications />
+
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm">
         <div className="flex items-center justify-between">
