@@ -17,7 +17,7 @@ const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVis
   const [showNotification, setShowNotification] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // List of Nigerian names with updated withdrawal amounts (90,000 - 250,000)
+  // List of Nigerian names with withdrawal amounts (90,000 - 250,000)
   const notifications: WithdrawalNotification[] = [
     { name: 'Adebayo Ogundimu', amount: 125000 },
     { name: 'Chioma Nwachukwu', amount: 145000 },
@@ -54,12 +54,13 @@ const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVis
   useEffect(() => {
     if (!isVisible) return;
 
-    const displayNotification = () => {
+    const startCycle = () => {
+      // Show notification
       const notification = notifications[currentIndex];
       setCurrentNotification(notification);
       setShowNotification(true);
 
-      // Hide notification after 3 seconds
+      // Hide after 3 seconds
       setTimeout(() => {
         setShowNotification(false);
       }, 3000);
@@ -68,16 +69,16 @@ const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVis
       setCurrentIndex((prevIndex) => (prevIndex + 1) % notifications.length);
     };
 
-    // Show first notification immediately
-    displayNotification();
+    // Start first notification immediately
+    startCycle();
 
-    // Then show notifications every 12 seconds
-    const interval = setInterval(displayNotification, 12000);
+    // Then repeat every 12 seconds
+    const interval = setInterval(startCycle, 12000);
 
     return () => clearInterval(interval);
   }, [isVisible, currentIndex]);
 
-  // Reset to a random index when component remounts (when returning to dashboard)
+  // Reset to a random index when returning to dashboard
   useEffect(() => {
     if (isVisible) {
       const randomIndex = Math.floor(Math.random() * notifications.length);
