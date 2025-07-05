@@ -7,8 +7,8 @@ interface YouTubeWatchPageProps {
 }
 
 const YouTubeWatchPage: React.FC<YouTubeWatchPageProps> = ({ onBack }) => {
-  // Extract video ID from the YouTube URL
-  const videoId = 'HUtOx2r8rCM';
+  // Extract video ID from the YouTube Shorts URL
+  const videoId = 'x8rmRxY-qbc';
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
   return (
