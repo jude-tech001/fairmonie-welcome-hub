@@ -15,6 +15,7 @@ interface WithdrawalNotificationsProps {
 const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVisible = true, onRestart }) => {
   const [currentNotification, setCurrentNotification] = useState<WithdrawalNotification | null>(null);
   const [showNotification, setShowNotification] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // List of Nigerian names with updated withdrawal amounts (90,000 - 250,000)
   const notifications: WithdrawalNotification[] = [
@@ -53,49 +54,55 @@ const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVis
   useEffect(() => {
     if (!isVisible) return;
 
-    let notificationIndex = 0;
-
     const displayNotification = () => {
-      const notification = notifications[notificationIndex];
+      const notification = notifications[currentIndex];
       setCurrentNotification(notification);
       setShowNotification(true);
 
-      // Hide notification after 7 seconds
+      // Hide notification after 3 seconds
       setTimeout(() => {
         setShowNotification(false);
-      }, 7000);
+      }, 3000);
 
       // Move to next notification
-      notificationIndex = (notificationIndex + 1) % notifications.length;
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % notifications.length);
     };
 
     // Show first notification immediately
     displayNotification();
 
-    // Then show notifications every 10 seconds
-    const interval = setInterval(displayNotification, 10000);
+    // Then show notifications every 12 seconds
+    const interval = setInterval(displayNotification, 12000);
 
     return () => clearInterval(interval);
-  }, [isVisible, onRestart]);
+  }, [isVisible, currentIndex]);
+
+  // Reset to a random index when component remounts (when returning to dashboard)
+  useEffect(() => {
+    if (isVisible) {
+      const randomIndex = Math.floor(Math.random() * notifications.length);
+      setCurrentIndex(randomIndex);
+    }
+  }, [isVisible]);
 
   if (!currentNotification || !isVisible) return null;
 
   return (
     <div
-      className={`fixed top-16 left-4 right-4 z-50 transform transition-all duration-500 ease-in-out ${
+      className={`fixed top-20 left-4 right-4 z-50 transform transition-all duration-500 ease-in-out ${
         showNotification 
           ? 'translate-y-0 opacity-100' 
           : '-translate-y-full opacity-0'
       }`}
     >
-      <div className="bg-green-50 border border-green-200 rounded-lg shadow-lg p-4 mx-auto max-w-sm">
+      <div className="bg-green-50 border border-green-200 rounded-lg shadow-lg p-3 mx-auto max-w-sm">
         <div className="flex items-center space-x-3">
           <div className="flex-shrink-0">
-            <CheckCircle className="w-6 h-6 text-green-600" />
+            <CheckCircle className="w-5 h-5 text-green-600" />
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-green-800">
+              <p className="text-xs font-medium text-green-800">
                 Withdrawal Successful
               </p>
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
