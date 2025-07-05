@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-import ErrorNotification from '@/components/ErrorNotification';
 
 interface AuthProps {
   onLogin: (user: { name: string; email: string }) => void;
@@ -21,8 +21,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [current, setCurrent] = useState(0);
   const [showAuth, setShowAuth] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
-  const [showErrorNotification, setShowErrorNotification] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState('');
 
   const bannerImages = [
@@ -87,9 +85,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
         localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: loginData.email }));
         onLogin({ name: user.name, email: loginData.email });
       } else {
-        setErrorMessage("Incorrect login details. Please sign up if you haven't registered yet.");
-        setShowErrorNotification(true);
-        setShowErrorPopup(false); // Hide old error popup
+        setShowErrorPopup(true);
       }
       setIsLoading(false);
     }, 1500);
@@ -124,14 +120,10 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
 
   const validateSignup = () => {
     if (signupData.password !== signupData.confirmPassword) {
-      setErrorMessage('Passwords did not match. Please try again.');
-      setShowErrorNotification(true);
       setError('Password did not match');
       return false;
     }
     if (signupData.password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long.');
-      setShowErrorNotification(true);
       setError('Password must be at least 6 characters');
       return false;
     }
@@ -144,13 +136,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen gradient-green flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Error Notification */}
-      <ErrorNotification 
-        message={errorMessage}
-        isVisible={showErrorNotification}
-        onClose={() => setShowErrorNotification(false)}
-      />
-
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-32 h-32 bg-white rounded-full blur-xl"></div>
