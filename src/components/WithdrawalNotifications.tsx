@@ -7,66 +7,83 @@ interface WithdrawalNotification {
   amount: number;
 }
 
-const WithdrawalNotifications: React.FC = () => {
-  const [currentNotification, setCurrentNotification] = useState<WithdrawalNotification | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+interface WithdrawalNotificationsProps {
+  isVisible?: boolean;
+  onRestart?: () => void;
+}
 
-  // List of Nigerian names with withdrawal amounts
+const WithdrawalNotifications: React.FC<WithdrawalNotificationsProps> = ({ isVisible = true, onRestart }) => {
+  const [currentNotification, setCurrentNotification] = useState<WithdrawalNotification | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
+
+  // List of Nigerian names with updated withdrawal amounts (90,000 - 250,000)
   const notifications: WithdrawalNotification[] = [
-    { name: 'Adebayo Ogundimu', amount: 25000 },
-    { name: 'Chioma Nwachukwu', amount: 45000 },
-    { name: 'Ibrahim Musa', amount: 18000 },
-    { name: 'Folake Adeyemi', amount: 67000 },
-    { name: 'Emeka Okafor', amount: 32000 },
-    { name: 'Aisha Bello', amount: 54000 },
-    { name: 'Tunde Bakare', amount: 28000 },
-    { name: 'Grace Okoro', amount: 41000 },
-    { name: 'Yusuf Aliyu', amount: 36000 },
-    { name: 'Ngozi Emenike', amount: 52000 },
-    { name: 'Babatunde Adegoke', amount: 23000 },
-    { name: 'Fatima Abdullahi', amount: 48000 },
-    { name: 'Chinedu Okoye', amount: 39000 },
-    { name: 'Blessing Ikechukwu', amount: 61000 },
-    { name: 'Hassan Mohammed', amount: 44000 },
-    { name: 'Kemi Oluwaseun', amount: 35000 },
-    { name: 'Victor Nnamdi', amount: 58000 },
-    { name: 'Amina Garba', amount: 29000 },
-    { name: 'Olumide Ajayi', amount: 47000 },
-    { name: 'Patience Eze', amount: 33000 }
+    { name: 'Adebayo Ogundimu', amount: 125000 },
+    { name: 'Chioma Nwachukwu', amount: 145000 },
+    { name: 'Ibrahim Musa', amount: 98000 },
+    { name: 'Folake Adeyemi', amount: 167000 },
+    { name: 'Emeka Okafor', amount: 132000 },
+    { name: 'Aisha Bello', amount: 154000 },
+    { name: 'Tunde Bakare', amount: 128000 },
+    { name: 'Grace Okoro', amount: 141000 },
+    { name: 'Yusuf Aliyu', amount: 136000 },
+    { name: 'Ngozi Emenike', amount: 152000 },
+    { name: 'Babatunde Adegoke', amount: 123000 },
+    { name: 'Fatima Abdullahi', amount: 148000 },
+    { name: 'Chinedu Okoye', amount: 139000 },
+    { name: 'Blessing Ikechukwu', amount: 161000 },
+    { name: 'Hassan Mohammed', amount: 144000 },
+    { name: 'Kemi Oluwaseun', amount: 135000 },
+    { name: 'Victor Nnamdi', amount: 158000 },
+    { name: 'Amina Garba', amount: 129000 },
+    { name: 'Olumide Ajayi', amount: 147000 },
+    { name: 'Patience Eze', amount: 133000 },
+    { name: 'Segun Adebayo', amount: 192000 },
+    { name: 'Funmi Olaleye', amount: 218000 },
+    { name: 'Kelechi Nwosu', amount: 205000 },
+    { name: 'Maryam Yakubu', amount: 234000 },
+    { name: 'Chijioke Eze', amount: 187000 },
+    { name: 'Aminat Lawal', amount: 226000 },
+    { name: 'Biodun Fagbemi', amount: 198000 },
+    { name: 'Zainab Usman', amount: 242000 },
+    { name: 'Chuka Okonkwo', amount: 176000 },
+    { name: 'Hadiza Ibrahim', amount: 250000 }
   ];
 
   useEffect(() => {
+    if (!isVisible) return;
+
     let notificationIndex = 0;
 
-    const showNotification = () => {
+    const displayNotification = () => {
       const notification = notifications[notificationIndex];
       setCurrentNotification(notification);
-      setIsVisible(true);
+      setShowNotification(true);
 
-      // Hide notification after 4 seconds
+      // Hide notification after 7 seconds
       setTimeout(() => {
-        setIsVisible(false);
-      }, 4000);
+        setShowNotification(false);
+      }, 7000);
 
       // Move to next notification
       notificationIndex = (notificationIndex + 1) % notifications.length;
     };
 
     // Show first notification immediately
-    showNotification();
+    displayNotification();
 
-    // Then show notifications every 6 seconds (4s visible + 2s gap)
-    const interval = setInterval(showNotification, 6000);
+    // Then show notifications every 10 seconds
+    const interval = setInterval(displayNotification, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible, onRestart]);
 
-  if (!currentNotification) return null;
+  if (!currentNotification || !isVisible) return null;
 
   return (
     <div
-      className={`fixed top-20 left-4 right-4 z-50 transform transition-all duration-500 ease-in-out ${
-        isVisible 
+      className={`fixed top-16 left-4 right-4 z-50 transform transition-all duration-500 ease-in-out ${
+        showNotification 
           ? 'translate-y-0 opacity-100' 
           : '-translate-y-full opacity-0'
       }`}
