@@ -51,6 +51,7 @@ import LoanPage from '@/components/LoanPage';
 import WithdrawalPage from '@/components/WithdrawalPage';
 import BuyFaircodeModal from '@/components/BuyFaircodeModal';
 import WhatsAppInviteModal from '@/components/WhatsAppInviteModal';
+import WithdrawalNotifications from '@/components/WithdrawalNotifications';
 
 interface User {
   name: string;
@@ -86,6 +87,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
   const [showBuyFaircode, setShowBuyFaircode] = useState(false);
   const [showWhatsAppInvite, setShowWhatsAppInvite] = useState(false);
   const [hasReturnedFromSubPage, setHasReturnedFromSubPage] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(true);
+  const [notificationKey, setNotificationKey] = useState(0);
+
+  // Get first name from user.name
+  const firstName = user.name.split(' ')[0];
 
   // Promotional banners - Updated with new images
   const promoImages = [
@@ -205,6 +211,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
         
         setHasReturnedFromSubPage(true);
         window.history.pushState(null, '', window.location.href);
+
+        // Restart notifications when returning to dashboard
+        setNotificationKey(prev => prev + 1);
 
         setTimeout(() => {
           setShowWhatsAppInvite(true);
@@ -405,16 +414,19 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onAddMoney, onLogout }) => 
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Withdrawal Notifications */}
+      <WithdrawalNotifications key={notificationKey} isVisible={showNotifications} />
+
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Avatar className="w-10 h-10">
               <AvatarFallback className="bg-green-100 text-green-600 font-semibold">
-                {user.name.charAt(0)}
+                {firstName.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <span className="text-lg font-medium text-gray-900">Hi, {user.name}</span>
+            <span className="text-lg font-medium text-gray-900">Hi, {firstName}</span>
           </div>
           <div className="flex items-center space-x-3">
             <button 
